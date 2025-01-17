@@ -13,7 +13,7 @@ class UsersPageState extends State<UsersPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Background(
+    return const Background(
       child: ScaffoldPage(
           content: Column(
         children: [Row()],

@@ -8,7 +8,7 @@ import 'package:desktop_math/features/view_departaments/presentation/pages/depar
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:sizer/sizer.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 import 'package:window_manager/window_manager.dart';
 
 enum Operations { add, subtract, multiply, divide }
@@ -25,11 +25,21 @@ void main() async {
     await windowManager.setPosition(Offset.zero);
 
     // Disable resizing and hide title bar
-    await windowManager.setResizable(false);
-    await windowManager.setTitleBarStyle(TitleBarStyle.hidden);
+    await windowManager.maximize();
+    await windowManager.setMinimumSize(const Size(800, 600));
+    // Dezactivează maximizarea
+    //await windowManager.setMaximizable(false);
+
+    // Dezactivează minimizarea
+    // await windowManager.setMinimizable(false);
+
+    // Dezactivează redimensionarea
+    // await windowManager.setResizable(false);
+
+    // await windowManager.setTitleBarStyle(TitleBarStyle.hidden);
 
     // Set the window to full screen (makes the window cover the entire screen)
-    await windowManager.setFullScreen(true);
+    //  await windowManager.setFullScreen(true);
 
     // Show the window
     await windowManager.show();
@@ -53,20 +63,25 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return FluentApp(
-      scrollBehavior: CustomScrollBehavior(),
-      theme: FluentThemeData(
-          brightness: Brightness.light, accentColor: Colors.orange),
-      darkTheme: FluentThemeData(
-          brightness: Brightness.dark, accentColor: Colors.orange),
-      home: MultiProvider(
-          providers: [
-            ChangeNotifierProvider(create: (_) => FormProvider()),
-            ChangeNotifierProvider(create: (_) => DepartamentHomeProvider()),
-          ],
-          child: Sizer(
-              builder: (context, orientation, deviceType) =>
-                  const Background(child: MyHomePage()))),
+    return ResponsiveApp(
+      builder: (_) {
+        return FluentApp(
+          scrollBehavior: CustomScrollBehavior(),
+          theme: FluentThemeData(
+              brightness: Brightness.light, accentColor: Colors.orange),
+          darkTheme: FluentThemeData(
+              brightness: Brightness.dark, accentColor: Colors.orange),
+          home: MultiProvider(
+            providers: [
+              ChangeNotifierProvider(create: (_) => FormProvider()),
+              ChangeNotifierProvider(create: (_) => DepartamentHomeProvider()),
+            ],
+            child: const Background(
+              child: MyHomePage(),
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -85,6 +100,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
   @override
   void initState() {
     windowManager.addListener(this);
+
     super.initState();
   }
 
