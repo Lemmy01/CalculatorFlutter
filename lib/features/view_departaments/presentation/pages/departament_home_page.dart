@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:desktop_math/core/background.dart';
 import 'package:desktop_math/core/consts.dart';
-import 'package:desktop_math/features/view_departaments/presentation/cubit/departament_home_provider.dart';
+import 'package:desktop_math/features/view_departaments/domain/entities/course_entity.dart';
+import 'package:desktop_math/features/view_departaments/presentation/provider/departament_home_provider.dart';
 import 'package:desktop_math/features/view_departaments/presentation/widgets/custom_button.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:provider/provider.dart';
@@ -145,79 +144,111 @@ class _DepartamentHomePageState extends State<DepartamentHomePage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SelectSemester(
-                            h: h,
-                            provider: provider,
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: AppColors.secondary,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            height: h > 600 ? h * 0.65 : h * 0.6,
-                            width: w > 800 ? w * 0.3 : w * 0.4,
-                            child: const SingleChildScrollView(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Course name: <NUME>"),
-                                  Text("Department: <DEPARTAMENT>"),
-                                  Text("Semester: <SEMESTRU>"),
-                                  Text("Numar credite : <NUMAR>"),
-                                  Text("Profesor: <PROFESOR>"),
-                                  Text("Assistent: <ASISTENT>"),
-                                  Text("Numar de cursuri: <NUMAR_CURSURI>"),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Column(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(right: w * 0.01),
-                                child: FilledButton(
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                        WidgetStateProperty.resolveWith(
-                                            (states) {
-                                      if (states.isHovered) {
-                                        return AppColors.onTertiaryContainer
-                                            .withOpacity(1);
-                                      }
-                                      if (states.isPressed) {
-                                        return AppColors.onTertiaryContainer
-                                            .withOpacity(0.5);
-                                      }
-                                      return AppColors.onTertiaryContainer
-                                          .withOpacity(0.5);
-                                    }),
+                          provider.getSelectedDepartament() != null
+                              ? SelectSemester(
+                                  h: h,
+                                  provider: provider,
+                                )
+                              : Container(),
+                          provider.getSelectedSemesterEntity() != null &&
+                                  provider.getSelectedDepartament() != null &&
+                                  provider.selectedCourse != null
+                              ? Container(
+                                  decoration: BoxDecoration(
+                                    color: AppColors.secondary,
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
-                                  child: const Text("Add a new Course"),
-                                  onPressed: () {},
-                                ),
-                              ),
-                              SizedBox(
-                                width: w > 1000 ? w * 0.15 : w * 0.25,
-                                height: h > 600 ? h * 0.65 : h * 0.6,
-                                child: ListView.builder(
-                                  itemCount: 20,
-                                  itemBuilder: (_, index) {
-                                    return ListTile(
-                                      title: Text(
-                                        'Course $index',
-                                        style: const TextStyle(
-                                            color: AppColors.white),
+                                  height: h > 600 ? h * 0.65 : h * 0.6,
+                                  width: w > 800 ? w * 0.3 : w * 0.4,
+                                  child: const SingleChildScrollView(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text("Course name: <NUME>"),
+                                        Text("Department: <DEPARTAMENT>"),
+                                        Text("Semester: <SEMESTRU>"),
+                                        Text("Numar credite : <NUMAR>"),
+                                        Text("Profesor: <PROFESOR>"),
+                                        Text("Assistent: <ASISTENT>"),
+                                        Text(
+                                            "Numar de cursuri: <NUMAR_CURSURI>"),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              : Container(),
+                          provider.getSelectedSemesterEntity() != null &&
+                                  provider.getSelectedDepartament() != null
+                              ? Column(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(right: w * 0.01),
+                                      child: FilledButton(
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              WidgetStateProperty.resolveWith(
+                                                  (states) {
+                                            if (states.isHovered) {
+                                              return AppColors
+                                                  .onTertiaryContainer
+                                                  .withOpacity(1);
+                                            }
+                                            if (states.isPressed) {
+                                              return AppColors
+                                                  .onTertiaryContainer
+                                                  .withOpacity(0.5);
+                                            }
+                                            return AppColors.onTertiaryContainer
+                                                .withOpacity(0.5);
+                                          }),
+                                        ),
+                                        child: const Text("Add a new Course"),
+                                        onPressed: () {},
                                       ),
-                                      subtitle: Text('Proffesor: $index',
-                                          style: const TextStyle(
-                                              color: AppColors.white)),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
+                                    ),
+                                    SizedBox(
+                                      width: w > 1000 ? w * 0.15 : w * 0.25,
+                                      height: h > 600 ? h * 0.65 : h * 0.6,
+                                      child: ListView.builder(
+                                        itemCount: provider.courses.length,
+                                        itemBuilder: (_, index) {
+                                          bool isSelected =
+                                              provider.selectedCourse == index;
+                                          CourseEntity course =
+                                              provider.courses[index];
+                                          return ListTile(
+                                            title: Text(
+                                              course.title,
+                                              style: TextStyle(
+                                                color: isSelected
+                                                    ? AppColors.white
+                                                    : AppColors.white
+                                                        .withOpacity(0.5),
+                                              ),
+                                            ),
+                                            subtitle: Text(
+                                              //TODO: Switch with teacher name
+                                              course.courseCredits.toString(),
+                                              style: TextStyle(
+                                                color: isSelected
+                                                    ? AppColors.white
+                                                    : AppColors.white
+                                                        .withOpacity(0.5),
+                                              ),
+                                            ),
+                                            onPressed: () {
+                                              provider.setSelectedCourse(index);
+                                            },
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : Container(),
                         ],
                       ),
                     ],
@@ -274,15 +305,16 @@ class SelectSemester extends StatelessWidget {
                 itemCount: provider.getSemesterLenght(),
                 itemBuilder: (_, index) {
                   return GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       provider.setSelectedSemester(index);
+                      await provider.getCoursesFromRepo();
                     },
                     child: Card(
                         backgroundColor: provider.selectedSemester == index
                             ? AppColors.onSecondary
                             : AppColors.secondary,
                         child: Text(
-                          provider.getSemester(index).semesterNumber,
+                          provider.getSemester(index).semesterNumber.toString(),
                         )),
                   );
                 }),
@@ -314,8 +346,9 @@ class DepartamentRow extends StatelessWidget {
             padding: const EdgeInsets.symmetric(
                 horizontal: 8.0), // Add spacing between items
             child: GestureDetector(
-              onTap: () {
+              onTap: () async {
                 provider.setSelectedDepartament(index);
+                await provider.getSemesters();
               },
               child: Container(
                 padding: EdgeInsets.all(width * 0.005),
@@ -328,18 +361,14 @@ class DepartamentRow extends StatelessWidget {
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       departament.name,
                       style: const TextStyle(color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
-                    Text(
-                      departament.facultyId,
-                      style: const TextStyle(color: Colors.white),
-                      textAlign: TextAlign.center,
-                    ),
-                    const Expanded(child: SizedBox()),
+                    // const Expanded(child: SizedBox()),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [

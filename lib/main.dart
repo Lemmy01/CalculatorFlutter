@@ -3,8 +3,10 @@ import 'dart:ui';
 import 'package:desktop_math/core/background.dart';
 import 'package:desktop_math/features/add_teacher/presentation/cubit/form_provider.dart';
 import 'package:desktop_math/features/users_page/presentation/pages/users_page.dart';
-import 'package:desktop_math/features/view_departaments/presentation/cubit/departament_home_provider.dart';
+import 'package:desktop_math/features/view_departaments/presentation/provider/departament_home_provider.dart';
 import 'package:desktop_math/features/view_departaments/presentation/pages/departament_home_page.dart';
+import 'package:desktop_math/injection.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -13,8 +15,22 @@ import 'package:window_manager/window_manager.dart';
 
 enum Operations { add, subtract, multiply, divide }
 
+//flutter pub run build_runner watch --delete-conflicting-outputs
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+      apiKey: "AIzaSyBtIoiPaA98ubDHOKIwAtxutKuvmeORtAI",
+      authDomain: "usv-hub.firebaseapp.com",
+      projectId: "usv-hub",
+      storageBucket: "usv-hub.appspot.com",
+      messagingSenderId: "511355181571",
+      appId: "1:511355181571:web:caeb2559d25a3ea4d24c36",
+      measurementId: "G-MW33NV1B65",
+    ),
+  );
+
+  configureDependencies();
   await windowManager.ensureInitialized();
 
   await windowManager.waitUntilReadyToShow().then((_) async {
@@ -74,7 +90,9 @@ class MyApp extends StatelessWidget {
           home: MultiProvider(
             providers: [
               ChangeNotifierProvider(create: (_) => FormProvider()),
-              ChangeNotifierProvider(create: (_) => DepartamentHomeProvider()),
+              ChangeNotifierProvider(
+                  create: (_) =>
+                      getIt<DepartamentHomeProvider>()..getDepartaments()),
             ],
             child: const Background(
               child: MyHomePage(),
@@ -183,3 +201,5 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
     }
   }
 }
+
+//flutter pub get && flutter pub run build_runner watch --delete-conflicting-outputs

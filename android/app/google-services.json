@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "511355181571",
+    "project_id": "usv-hub",
+    "storage_bucket": "usv-hub.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:511355181571:android:542d4c499be1b791d24c36",
+        "android_client_info": {
+          "package_name": "com.example.desktop_math"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpiCKPEFz7WHmFPTXhCX2dFspMqtbNu3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:511355181571:android:92bd9fce547fcd9cd24c36",
+        "android_client_info": {
+          "package_name": "com.example.usv_hub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpiCKPEFz7WHmFPTXhCX2dFspMqtbNu3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -194,6 +194,7 @@ class AppFields {
   static const String assistentId = "AssistentId";
   static const String courseFrequency = "CourseFreq";
   static const String semester = "Semester";
+  static const String semesterNumber = "SemesterNumber";
   static const String courseCredits = "CourseCredits";
   static const String schedule = "Schedule";
 
@@ -269,6 +270,7 @@ class AppCollections {
   static const semesterCollection = 'Semester';
   static const semesterXStudentCollection = 'SemesterXStudent';
   static const departamentXTeacher = 'DepartamentXTeacher';
+  static const departament = 'Departament';
 
   static const String teacher = 'Teacher';
   static const String student = 'Student';
