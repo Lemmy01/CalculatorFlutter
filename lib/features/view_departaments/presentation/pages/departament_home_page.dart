@@ -2,7 +2,6 @@ import 'package:desktop_math/core/background.dart';
 import 'package:desktop_math/core/consts.dart';
 import 'package:desktop_math/features/view_departaments/domain/entities/course_entity.dart';
 import 'package:desktop_math/features/view_departaments/presentation/provider/departament_home_provider.dart';
-import 'package:desktop_math/features/view_departaments/presentation/widgets/custom_button.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
@@ -56,12 +55,6 @@ class _DepartamentHomePageState extends State<DepartamentHomePage> {
   }
 
   @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeMetrics
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
@@ -104,38 +97,38 @@ class _DepartamentHomePageState extends State<DepartamentHomePage> {
                               ],
                             ),
                           ),
-                          Row(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(right: w * 0.01),
-                                child: FilledButton(
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                        WidgetStateProperty.resolveWith(
-                                            (states) {
-                                      if (states.isHovered) {
-                                        return AppColors.onTertiaryContainer
-                                            .withOpacity(1);
-                                      }
-                                      if (states.isPressed) {
-                                        return AppColors.onTertiaryContainer
-                                            .withOpacity(0.5);
-                                      }
-                                      return AppColors.onTertiaryContainer
-                                          .withOpacity(0.5);
-                                    }),
-                                  ),
-                                  child: const Text("Add a new Faculty"),
-                                  onPressed: () {},
-                                ),
-                              ),
-                              CustomButton(
-                                  w: w,
-                                  onPressed: () {},
-                                  title: 'Add a new Departament',
-                                  color: AppColors.onTertiaryContainer),
-                            ],
-                          ),
+                          // Row(
+                          //   children: [
+                          //     Padding(
+                          //       padding: EdgeInsets.only(right: w * 0.01),
+                          //       child: FilledButton(
+                          //         style: ButtonStyle(
+                          //           backgroundColor:
+                          //               WidgetStateProperty.resolveWith(
+                          //                   (states) {
+                          //             if (states.isHovered) {
+                          //               return AppColors.onTertiaryContainer
+                          //                   .withOpacity(1);
+                          //             }
+                          //             if (states.isPressed) {
+                          //               return AppColors.onTertiaryContainer
+                          //                   .withOpacity(0.5);
+                          //             }
+                          //             return AppColors.onTertiaryContainer
+                          //                 .withOpacity(0.5);
+                          //           }),
+                          //         ),
+                          //         child: const Text("Add a new Faculty"),
+                          //         onPressed: () {},
+                          //       ),
+                          //     ),
+                          //     CustomButton(
+                          //         w: w,
+                          //         onPressed: () {},
+                          //         title: 'Add a new Departament',
+                          //         color: AppColors.onTertiaryContainer),
+                          //   ],
+                          // ),
                         ],
                       ),
                       SizedBox(height: h * 0.015),

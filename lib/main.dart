@@ -1,7 +1,8 @@
 import 'dart:ui';
 
 import 'package:desktop_math/core/background.dart';
-import 'package:desktop_math/features/add_teacher/presentation/cubit/form_provider.dart';
+import 'package:desktop_math/features/add_teacher/presentation/pages/teachers_home_page.dart';
+import 'package:desktop_math/features/add_teacher/presentation/provider/home_page_provider.dart';
 import 'package:desktop_math/features/users_page/presentation/pages/users_page.dart';
 import 'package:desktop_math/features/view_departaments/presentation/provider/departament_home_provider.dart';
 import 'package:desktop_math/features/view_departaments/presentation/pages/departament_home_page.dart';
@@ -84,15 +85,31 @@ class MyApp extends StatelessWidget {
         return FluentApp(
           scrollBehavior: CustomScrollBehavior(),
           theme: FluentThemeData(
-              brightness: Brightness.light, accentColor: Colors.orange),
+            brightness: Brightness.light,
+            accentColor: Colors.orange,
+            typography: Typography.raw(
+              display: TextStyle(color: Colors.white.withOpacity(0.8)),
+              body: TextStyle(color: Colors.white.withOpacity(0.8)),
+              caption: TextStyle(color: Colors.white.withOpacity(0.8)),
+            ),
+          ),
           darkTheme: FluentThemeData(
-              brightness: Brightness.dark, accentColor: Colors.orange),
+            brightness: Brightness.dark,
+            accentColor: Colors.orange,
+            typography: Typography.raw(
+              display: TextStyle(color: Colors.white.withOpacity(0.8)),
+              body: TextStyle(color: Colors.white.withOpacity(0.8)),
+              caption: TextStyle(color: Colors.white.withOpacity(0.8)),
+            ),
+          ),
           home: MultiProvider(
             providers: [
-              ChangeNotifierProvider(create: (_) => FormProvider()),
+              // ChangeNotifierProvider(create: (_) => getIt<FormProvider>()),
               ChangeNotifierProvider(
                   create: (_) =>
                       getIt<DepartamentHomeProvider>()..getDepartaments()),
+              ChangeNotifierProvider(
+                  create: (_) => getIt<HomePageProvider>()..getDepartaments()),
             ],
             child: const Background(
               child: MyHomePage(),
@@ -147,18 +164,14 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
             PaneItem(
               icon: const FaIcon(FontAwesomeIcons.userTie),
               title: const Text('Teachers'),
-              body: const UsersPage(),
+              body: const TeachersHomePage(),
+              //TODO: Add the page for the teachers
             ),
             PaneItem(
-              //use Font Awsome Icons for the icon,
-              icon: const FaIcon(FontAwesomeIcons.userGraduate),
-              title: const Text('Students'),
-              body: const Background(
-                child: Center(
-                  child: Text('Home'),
-                ),
-              ),
-            ),
+                //use Font Awsome Icons for the icon,
+                icon: const FaIcon(FontAwesomeIcons.userGraduate),
+                title: const Text('Students'),
+                body: const UsersPage()),
             PaneItem(
               //use Font Awsome Icons for the icon,
               icon: const FaIcon(FluentIcons.cancel),
@@ -202,4 +215,4 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
   }
 }
 
-//flutter pub get && flutter pub run build_runner watch --delete-conflicting-outputs
+//flutter pub run build_runner watch --delete-conflicting-outputs

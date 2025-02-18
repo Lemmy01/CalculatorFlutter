@@ -260,6 +260,10 @@ class AppArguments {
   static const String clickType = "ClickType";
 
   static const String courseLenght = "CourseLenght";
+
+  static const String userEntity = "UserEntity";
+  static const String password = "Password";
+  static const String departament = "Departament";
 }
 
 class AppCollections {
