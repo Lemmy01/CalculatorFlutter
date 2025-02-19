@@ -114,7 +114,6 @@ class _TeacherHomePageState extends State<TeachersHomePage> {
                             CustomButton(
                               w: w,
                               onPressed: () {
-                                //TODO: Add teacher
                                 showDialog(
                                     context: context,
                                     builder: (_) {
@@ -124,7 +123,7 @@ class _TeacherHomePageState extends State<TeachersHomePage> {
                                           create: (_) => getIt<FormProvider>()
                                             ..setDepartament(departamentEntity),
                                           builder: (context, child) =>
-                                              MyFormPage());
+                                              const MyFormPage());
                                     });
                               },
                               title: "Add teacher",
@@ -146,7 +145,7 @@ class _TeacherHomePageState extends State<TeachersHomePage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
+                            SizedBox(
                               // decoration: BoxDecoration(
                               //   color: AppColors.secondary,
                               //   borderRadius: BorderRadius.circular(10),
@@ -309,7 +308,6 @@ class _TeacherHomePageState extends State<TeachersHomePage> {
                       //                           ),
                       //                         ),
                       //                         subtitle: Text(
-                      //                           //TODO: Switch with teacher name
                       //                           course.courseCredits.toString(),
                       //                           style: TextStyle(
                       //                             color: isSelected

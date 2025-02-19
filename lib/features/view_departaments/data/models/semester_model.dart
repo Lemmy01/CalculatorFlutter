@@ -23,4 +23,12 @@ class SemesterModel extends SemesterEntity {
       AppFields.departamentId: super.departamentId,
     };
   }
+
+  factory SemesterModel.fromEntity(SemesterEntity entity) {
+    return SemesterModel(
+      id: entity.id,
+      semesterNumber: entity.semesterNumber,
+      departamentId: entity.departamentId,
+    );
+  }
 }

@@ -34,6 +34,7 @@ class DepartamentHomeProvider extends ChangeNotifier {
   int? _selectedCourse;
 
   List<DepartamentEntity> get departaments => _departaments;
+  List<SemesterEntity> get semesters => _semesters;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
   int? get selectedDepartamentIndex => _selectedDepartamentIndex;
@@ -69,6 +70,7 @@ class DepartamentHomeProvider extends ChangeNotifier {
       (semesters) {
         _semesters.clear();
         _semesters.addAll(semesters);
+        _semesters.sort((a, b) => a.semesterNumber.compareTo(b.semesterNumber));
       },
     );
 

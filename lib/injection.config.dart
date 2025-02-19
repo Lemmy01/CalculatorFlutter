@@ -28,6 +28,8 @@ import 'features/view_departaments/data/repositories/departament_repo_impl.dart'
     as _i173;
 import 'features/view_departaments/domain/repositories/departament_repo.dart'
     as _i1006;
+import 'features/view_departaments/domain/usecases/add_semester_usecase.dart'
+    as _i94;
 import 'features/view_departaments/domain/usecases/get_course_usecase.dart'
     as _i0;
 import 'features/view_departaments/domain/usecases/get_departaments_usecase.dart'
@@ -36,6 +38,8 @@ import 'features/view_departaments/domain/usecases/get_semesters_usecase.dart'
     as _i84;
 import 'features/view_departaments/presentation/provider/departament_home_provider.dart'
     as _i510;
+import 'features/view_departaments/presentation/provider/edit_departament_provider.dart'
+    as _i158;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -60,8 +64,13 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i606.GetDepartamentsUsecase(gh<_i1006.DepartamentRepository>()));
     gh.lazySingleton<_i84.GetSemestersUsecase>(
         () => _i84.GetSemestersUsecase(gh<_i1006.DepartamentRepository>()));
+    gh.lazySingleton<_i94.AddSemesterUsecase>(
+        () => _i94.AddSemesterUsecase(gh<_i1006.DepartamentRepository>()));
     gh.lazySingleton<_i677.AddTeacherRepository>(
         () => _i382.AddTeacherRepoImpl(gh<_i618.TeacherApiService>()));
+    gh.factory<_i158.EditDepartamentProvider>(() =>
+        _i158.EditDepartamentProvider(
+            addSemesterUsecase: gh<_i94.AddSemesterUsecase>()));
     gh.factory<_i510.DepartamentHomeProvider>(
         () => _i510.DepartamentHomeProvider(
               getDepartamentsUsecase: gh<_i606.GetDepartamentsUsecase>(),

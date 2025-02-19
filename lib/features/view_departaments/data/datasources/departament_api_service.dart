@@ -59,4 +59,17 @@ class DepartamentApiService {
       throw MediumException(runtimeType, e.toString());
     }
   }
+
+  Future<void> addSemester(SemesterModel semester) async {
+    try {
+      final ref =
+          _firestore.collection(AppCollections.semesterCollection).doc();
+      semester.id = ref.id;
+      await ref.set(semester.toJson());
+    } on FirebaseException catch (e) {
+      throw MediumException(runtimeType, e.message!);
+    } catch (e) {
+      throw MediumException(runtimeType, e.toString());
+    }
+  }
 }

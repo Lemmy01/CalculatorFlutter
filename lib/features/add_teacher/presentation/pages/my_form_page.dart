@@ -119,7 +119,6 @@ class MyFormPageState extends State<MyFormPage> {
                         : null,
                   ),
                   onPressed: () async {
-                    // TODO: Procesează datele formularului
                     if (provider.validateData()) {
                       await provider.submitForm(context);
 

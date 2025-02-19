@@ -1,7 +1,10 @@
 import 'package:desktop_math/core/background.dart';
 import 'package:desktop_math/core/consts.dart';
 import 'package:desktop_math/features/view_departaments/domain/entities/course_entity.dart';
+import 'package:desktop_math/features/view_departaments/presentation/pages/edit_departament_dialog.dart';
 import 'package:desktop_math/features/view_departaments/presentation/provider/departament_home_provider.dart';
+import 'package:desktop_math/features/view_departaments/presentation/provider/edit_departament_provider.dart';
+import 'package:desktop_math/injection.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
@@ -336,8 +339,7 @@ class DepartamentRow extends StatelessWidget {
           final departament = provider.departaments[index];
           final isSelected = provider.selectedDepartamentIndex == index;
           return Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 8.0), // Add spacing between items
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: GestureDetector(
               onTap: () async {
                 provider.setSelectedDepartament(index);
@@ -345,11 +347,10 @@ class DepartamentRow extends StatelessWidget {
               },
               child: Container(
                 padding: EdgeInsets.all(width * 0.005),
-                width: width * 0.2, // Adjust the width of each item
+                width: width * 0.2,
                 decoration: BoxDecoration(
-                  color: isSelected
-                      ? AppColors.onPrimary
-                      : AppColors.primaryFixed, // Example background color
+                  color:
+                      isSelected ? AppColors.onPrimary : AppColors.primaryFixed,
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: Column(
@@ -361,61 +362,47 @@ class DepartamentRow extends StatelessWidget {
                       style: const TextStyle(color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
-                    // const Expanded(child: SizedBox()),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        FilledButton(
-                          style: ButtonStyle(
-                            backgroundColor:
-                                WidgetStateProperty.resolveWith((states) {
-                              if (states.isHovered) {
-                                return AppColors.onSecondary.withOpacity(0.5);
-                              }
-                              if (states.isPressed) {
+                    if (isSelected)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          FilledButton(
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  WidgetStateProperty.resolveWith((states) {
+                                if (states.isHovered) {
+                                  return AppColors.onSecondary.withOpacity(0.5);
+                                }
+                                if (states.isPressed) {
+                                  return AppColors.onSecondary;
+                                }
                                 return AppColors.onSecondary;
-                              }
-                              return AppColors.onSecondary;
-                            }),
+                              }),
+                            ),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Icon(FluentIcons.edit),
+                                Text('Edit'),
+                              ],
+                            ),
+                            onPressed: () {
+                              // Your button action here
+                              showDialog(
+                                  context: context,
+                                  builder: (_) {
+                                    return ChangeNotifierProvider(
+                                        create: (_) =>
+                                            getIt<EditDepartamentProvider>()
+                                              ..setSemesters(
+                                                  provider.semesters),
+                                        builder: (context, child) =>
+                                            const EditDepartamentDialog());
+                                  });
+                            },
                           ),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Icon(FluentIcons.edit),
-                              Text('Edit'),
-                            ],
-                          ),
-                          onPressed: () {
-                            // Your button action here
-                          },
-                        ),
-                        SizedBox(width: width * 0.01),
-                        FilledButton(
-                          style: ButtonStyle(
-                            backgroundColor:
-                                WidgetStateProperty.resolveWith((states) {
-                              if (states.isHovered) {
-                                return AppColors.error.withOpacity(1);
-                              }
-                              if (states.isPressed) {
-                                return AppColors.error.withOpacity(0.5);
-                              }
-                              return AppColors.error.withOpacity(0.5);
-                            }),
-                          ),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Icon(FluentIcons.delete),
-                              Text('Delete'),
-                            ],
-                          ),
-                          onPressed: () {
-                            // Your button action here
-                          },
-                        ),
-                      ],
-                    )
+                        ],
+                      )
                   ],
                 ),
               ),

@@ -165,7 +165,6 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
               icon: const FaIcon(FontAwesomeIcons.userTie),
               title: const Text('Teachers'),
               body: const TeachersHomePage(),
-              //TODO: Add the page for the teachers
             ),
             PaneItem(
                 //use Font Awsome Icons for the icon,
@@ -190,7 +189,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
     bool isPreventClose = await windowManager.isPreventClose();
     if (isPreventClose) {
       showDialog(
-          context: context,
+          context: context.mounted ? context : viewKey.currentContext!,
           builder: (_) {
             return ContentDialog(
                 title: const Text('Confirm close'),

@@ -43,10 +43,9 @@ Future<void> signInWithEmail(String email, String password) async {
 
   final data = jsonDecode(response.body);
   if (response.statusCode == 200) {
-    print("✅ Signed in successfully!");
-    print("ID Token: ${data['idToken']}");
+    //TODO: handle sign in
   } else {
-    print("❌ Error: ${data['error']['message']}");
+    //TODO: handle error
   }
 }
 
@@ -65,9 +64,8 @@ Future<void> refreshToken(String refreshToken) async {
 
   final data = jsonDecode(response.body);
   if (response.statusCode == 200) {
-    print("✅ Token refreshed successfully!");
-    print("New ID Token: ${data['id_token']}");
+    //TODO: handle refresh token
   } else {
-    print("❌ Error: ${data['error']['message']}");
+    //TODO: handle error
   }
 }
