@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:desktop_math/core/errors/exceptions.dart';
 import 'package:desktop_math/core/errors/failures.dart';
 import 'package:desktop_math/features/view_departaments/data/datasources/departament_api_service.dart';
+import 'package:desktop_math/features/view_departaments/data/models/course_model.dart';
 import 'package:desktop_math/features/view_departaments/data/models/semester_model.dart';
 import 'package:desktop_math/features/view_departaments/domain/entities/course_entity.dart';
 import 'package:desktop_math/features/view_departaments/domain/entities/departament_entity.dart';
@@ -52,6 +53,17 @@ class DepartamentRepoImpl extends DepartamentRepository {
     try {
       final SemesterModel model = SemesterModel.fromEntity(semester);
       await departamentApiService.addSemester(model);
+      return const Right(null);
+    } on MediumException catch (e) {
+      return Left(MediumFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> addCourse(CourseEntity course) async {
+    try {
+      final CourseModel model = CourseModel.fromEntity(course);
+      departamentApiService.addCourse(model);
       return const Right(null);
     } on MediumException catch (e) {
       return Left(MediumFailure(message: e.message));

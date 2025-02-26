@@ -1,9 +1,11 @@
 import 'dart:ui';
 
 import 'package:desktop_math/core/background.dart';
+import 'package:desktop_math/core/consts.dart';
 import 'package:desktop_math/features/add_teacher/presentation/pages/teachers_home_page.dart';
 import 'package:desktop_math/features/add_teacher/presentation/provider/home_page_provider.dart';
 import 'package:desktop_math/features/users_page/presentation/pages/users_page.dart';
+import 'package:desktop_math/features/view_departaments/presentation/pages/add_course_page.dart';
 import 'package:desktop_math/features/view_departaments/presentation/provider/departament_home_provider.dart';
 import 'package:desktop_math/features/view_departaments/presentation/pages/departament_home_page.dart';
 import 'package:desktop_math/injection.dart';
@@ -104,7 +106,6 @@ class MyApp extends StatelessWidget {
           ),
           home: MultiProvider(
             providers: [
-              // ChangeNotifierProvider(create: (_) => getIt<FormProvider>()),
               ChangeNotifierProvider(
                   create: (_) =>
                       getIt<DepartamentHomeProvider>()..getDepartaments()),
@@ -159,7 +160,23 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
             PaneItem(
               icon: const Icon(FluentIcons.home),
               title: const Text('Home'),
-              body: const DepartamentHomePage(),
+              body: Navigator(
+                onGenerateRoute: (settings) {
+                  if (settings.name == AppRouteConst.addCourse) {
+                    Map<String, String> map =
+                        settings.arguments! as Map<String, String>;
+                    return FluentPageRoute(
+                      builder: (context) => AddCoursePage(
+                        departamentId: map[AppFields.departamentId]!,
+                        semesterId: map[AppFields.semesterId]!,
+                      ),
+                    );
+                  }
+                  return FluentPageRoute(
+                    builder: (context) => const DepartamentHomePage(),
+                  );
+                },
+              ),
             ),
             PaneItem(
               icon: const FaIcon(FontAwesomeIcons.userTie),

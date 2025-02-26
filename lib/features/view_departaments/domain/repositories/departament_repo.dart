@@ -10,4 +10,5 @@ abstract class DepartamentRepository {
       String departamentId);
   Future<Either<Failure, List<CourseEntity>>> getCourses(String semesterId);
   Future<Either<Failure, void>> addSemester(SemesterEntity semester);
+  Future<Either<Failure, void>> addCourse(CourseEntity course);
 }

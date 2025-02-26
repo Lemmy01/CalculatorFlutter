@@ -154,6 +154,8 @@ class AppRouteConst {
   static const String addAttandance = '/addAttandance';
 
   static const String coursesPage = '/coursesPage';
+
+  static const String addCourse = '/addCourse';
 }
 
 class AppImages {
@@ -365,6 +367,123 @@ extension StringToAttendanceStatus on String {
         return AttendanceStatus.empty;
       default:
         return AttendanceStatus.present;
+    }
+  }
+}
+
+enum ClassType { course, laboratory }
+
+extension ClassTypeToString on ClassType {
+  String get stringValue {
+    switch (this) {
+      case ClassType.course:
+        return 'Course';
+      case ClassType.laboratory:
+        return 'Laboratory';
+
+      default:
+        return '';
+    }
+  }
+}
+
+extension StringToClassType on String {
+  ClassType get toClassType {
+    switch (toLowerCase()) {
+      case 'course':
+        return ClassType.course;
+      case 'laboratory':
+        return ClassType.laboratory;
+      default:
+        return ClassType.course;
+    }
+  }
+}
+
+enum CourseFrequency { saptamaniPare, saptamaniImpare, toateSaptamanile }
+
+extension CourseFrequencyToString on CourseFrequency {
+  String get stringValue {
+    switch (this) {
+      case CourseFrequency.saptamaniPare:
+        return 'Saptamani pare';
+      case CourseFrequency.saptamaniImpare:
+        return 'Saptamani impare';
+      case CourseFrequency.toateSaptamanile:
+        return 'Toate saptamanile';
+      default:
+        return '';
+    }
+  }
+}
+
+extension StringToCourseFrequency on String {
+  CourseFrequency? toCourseFrequency() {
+    switch (toLowerCase()) {
+      case 'saptamani pare':
+        return CourseFrequency.saptamaniPare;
+      case 'saptamani impare':
+        return CourseFrequency.saptamaniImpare;
+      case 'toate saptamanile':
+        return CourseFrequency.toateSaptamanile;
+      default:
+        return null;
+    }
+  }
+}
+
+enum DayOfWeek {
+  monday,
+  tuesday,
+  wednesday,
+  thursday,
+  friday,
+  saturday,
+  sunday
+}
+
+extension DayOfWeekToString on DayOfWeek {
+  String get stringValue {
+    switch (this) {
+      case DayOfWeek.monday:
+        return 'Monday';
+      case DayOfWeek.tuesday:
+        return 'Tuesday';
+      case DayOfWeek.wednesday:
+        return 'Wednesday';
+      case DayOfWeek.thursday:
+        return 'Thursday';
+      case DayOfWeek.friday:
+        return 'Friday';
+      case DayOfWeek.saturday:
+        return 'Saturday';
+      case DayOfWeek.sunday:
+        return 'Sunday';
+      default:
+        return '';
+    }
+  }
+}
+
+extension StringToDayOfWeek on String {
+  DayOfWeek? toDayOfWeek() {
+    switch (toLowerCase()) {
+      case 'monday':
+        return DayOfWeek.monday;
+      case 'tuesday':
+        return DayOfWeek.tuesday;
+      case 'wednesday':
+        return DayOfWeek.wednesday;
+      case 'thursday':
+        return DayOfWeek.thursday;
+      case 'friday':
+        return DayOfWeek.friday;
+      case 'saturday':
+        return DayOfWeek.saturday;
+      case 'sunday':
+        return DayOfWeek.sunday;
+      default:
+        return null;
     }
   }
 }

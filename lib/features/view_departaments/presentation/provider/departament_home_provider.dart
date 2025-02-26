@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:desktop_math/features/view_departaments/domain/entities/course_entity.dart';
 import 'package:desktop_math/features/view_departaments/domain/entities/departament_entity.dart';
 import 'package:desktop_math/features/view_departaments/domain/entities/semester_entity.dart';
@@ -118,7 +116,6 @@ class DepartamentHomeProvider extends ChangeNotifier {
 
   DepartamentEntity? getSelectedDepartament() {
     if (_selectedDepartamentIndex == null) return null;
-    log(_departaments.length.toString());
     if (_departaments.isEmpty) return null;
     return _departaments[_selectedDepartamentIndex!];
   }

@@ -2,8 +2,9 @@
 
 import 'package:equatable/equatable.dart';
 
+// ignore: must_be_immutable
 class CourseEntity extends Equatable {
-  final String id;
+  String id;
   final String teacherId;
   final String assistentId;
   final String title;
@@ -12,7 +13,7 @@ class CourseEntity extends Equatable {
   final String semesterId;
   final List<Map<String, dynamic>> scheduleMap;
 
-  const CourseEntity({
+  CourseEntity({
     required this.id,
     required this.teacherId,
     required this.assistentId,

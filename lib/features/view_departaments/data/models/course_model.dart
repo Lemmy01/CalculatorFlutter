@@ -1,8 +1,9 @@
 import 'package:desktop_math/core/consts.dart';
 import 'package:desktop_math/features/view_departaments/domain/entities/course_entity.dart';
 
+// ignore: must_be_immutable
 class CourseModel extends CourseEntity {
-  const CourseModel(
+  CourseModel(
       {required super.id,
       required super.teacherId,
       required super.assistentId,
@@ -21,7 +22,7 @@ class CourseModel extends CourseEntity {
       AppFields.numberOfCourses: numberOfCourses,
       AppFields.courseCredits: courseCredits,
       AppFields.schedule: scheduleMap,
-      AppFields.semester: semesterId,
+      AppFields.semesterId: semesterId,
     };
   }
 
@@ -44,6 +45,19 @@ class CourseModel extends CourseEntity {
           AppFields.courseFrequency: e[AppFields.courseFrequency],
         };
       }).toList(),
+    );
+  }
+
+  factory CourseModel.fromEntity(CourseEntity entity) {
+    return CourseModel(
+      id: entity.id,
+      teacherId: entity.teacherId,
+      assistentId: entity.assistentId,
+      title: entity.title,
+      numberOfCourses: entity.numberOfCourses,
+      courseCredits: entity.courseCredits,
+      semesterId: entity.semesterId,
+      scheduleMap: entity.scheduleMap,
     );
   }
 }

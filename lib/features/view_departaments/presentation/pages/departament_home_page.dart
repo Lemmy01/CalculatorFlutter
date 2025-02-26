@@ -202,7 +202,20 @@ class _DepartamentHomePageState extends State<DepartamentHomePage> {
                                           }),
                                         ),
                                         child: const Text("Add a new Course"),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          Navigator.pushNamed(
+                                            context,
+                                            AppRouteConst.addCourse,
+                                            arguments: {
+                                              AppFields.departamentId: provider
+                                                  .getSelectedDepartament()!
+                                                  .id,
+                                              AppFields.semesterId: provider
+                                                  .getSelectedSemesterEntity()!
+                                                  .id,
+                                            },
+                                          );
+                                        },
                                       ),
                                     ),
                                     SizedBox(
