@@ -4,6 +4,7 @@ import 'package:desktop_math/features/view_departaments/domain/entities/course_e
 import 'package:desktop_math/features/view_departaments/presentation/pages/edit_departament_dialog.dart';
 import 'package:desktop_math/features/view_departaments/presentation/provider/departament_home_provider.dart';
 import 'package:desktop_math/features/view_departaments/presentation/provider/edit_departament_provider.dart';
+import 'package:desktop_math/features/view_departaments/presentation/widgets/select_semester_widget.dart';
 import 'package:desktop_math/injection.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:provider/provider.dart';
@@ -143,7 +144,18 @@ class _DepartamentHomePageState extends State<DepartamentHomePage> {
                           provider.getSelectedDepartament() != null
                               ? SelectSemester(
                                   h: h,
-                                  provider: provider,
+                                  lenght: provider.getSemesterLenght(),
+                                  onTap: (int index) async {
+                                    provider.setSelectedSemester(index);
+                                    await provider.getCoursesFromRepo();
+                                  },
+                                  selectedSemester: provider.selectedSemester,
+                                  getTitle: (int index) {
+                                    return provider
+                                        .getSemester(index)
+                                        .semesterNumber
+                                        .toString();
+                                  },
                                 )
                               : Container(),
                           provider.getSelectedSemesterEntity() != null &&
@@ -156,21 +168,27 @@ class _DepartamentHomePageState extends State<DepartamentHomePage> {
                                   ),
                                   height: h > 600 ? h * 0.65 : h * 0.6,
                                   width: w > 800 ? w * 0.3 : w * 0.4,
-                                  child: const SingleChildScrollView(
+                                  child: SingleChildScrollView(
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text("Course name: <NUME>"),
-                                        Text("Department: <DEPARTAMENT>"),
-                                        Text("Semester: <SEMESTRU>"),
-                                        Text("Numar credite : <NUMAR>"),
-                                        Text("Profesor: <PROFESOR>"),
-                                        Text("Assistent: <ASISTENT>"),
                                         Text(
-                                            "Numar de cursuri: <NUMAR_CURSURI>"),
+                                            "Course name: ${provider.getSelectedCourseEntity()!.title}"),
+                                        Text(
+                                            "Department: ${provider.getSelectedDepartament()!.name}"),
+                                        Text(
+                                            "Semester: ${provider.getSelectedSemesterEntity()!.semesterNumber}"),
+                                        Text(
+                                            "Numar credite : ${provider.getSelectedCourseEntity()!.courseCredits}"),
+                                        Text(
+                                            "Profesor:  ${provider.teacherName}"),
+                                        Text(
+                                            "Assistent: ${provider.assistentName}"),
+                                        Text(
+                                            "Numar de cursuri: ${provider.getSelectedCourseEntity()!.courseCredits}"),
                                       ],
                                     ),
                                   ),
@@ -248,8 +266,9 @@ class _DepartamentHomePageState extends State<DepartamentHomePage> {
                                                         .withOpacity(0.5),
                                               ),
                                             ),
-                                            onPressed: () {
+                                            onPressed: () async {
                                               provider.setSelectedCourse(index);
+                                              provider.getNames();
                                             },
                                           );
                                         },
@@ -272,64 +291,6 @@ class _DepartamentHomePageState extends State<DepartamentHomePage> {
           );
         },
       )),
-    );
-  }
-}
-
-class SelectSemester extends StatelessWidget {
-  const SelectSemester({
-    super.key,
-    required this.h,
-    required this.provider,
-  });
-
-  final double h;
-  final DepartamentHomeProvider provider;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: h * 0.4,
-      height: h > 600 ? h * 0.65 : h * 0.6,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Semesters',
-            style: TextStyle(
-              color: AppColors.white,
-              fontSize: 15,
-            ),
-          ),
-          SizedBox(
-            height: h * 0.01,
-          ),
-          Expanded(
-            child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 10.0,
-                  crossAxisSpacing: 10.0,
-                ),
-                itemCount: provider.getSemesterLenght(),
-                itemBuilder: (_, index) {
-                  return GestureDetector(
-                    onTap: () async {
-                      provider.setSelectedSemester(index);
-                      await provider.getCoursesFromRepo();
-                    },
-                    child: Card(
-                        backgroundColor: provider.selectedSemester == index
-                            ? AppColors.onSecondary
-                            : AppColors.secondary,
-                        child: Text(
-                          provider.getSemester(index).semesterNumber.toString(),
-                        )),
-                  );
-                }),
-          ),
-        ],
-      ),
     );
   }
 }

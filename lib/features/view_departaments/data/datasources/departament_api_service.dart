@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:desktop_math/core/consts.dart';
 import 'package:desktop_math/core/errors/exceptions.dart';
+import 'package:desktop_math/features/add_teacher/data/models/user_model.dart';
 import 'package:desktop_math/features/view_departaments/data/models/course_model.dart';
 import 'package:desktop_math/features/view_departaments/data/models/departament_model.dart';
 import 'package:desktop_math/features/view_departaments/data/models/semester_model.dart';
@@ -78,6 +79,20 @@ class DepartamentApiService {
       final ref = _firestore.collection(AppCollections.courseCollection).doc();
       course.id = ref.id;
       await ref.set(course.toMap());
+    } on FirebaseException catch (e) {
+      throw MediumException(runtimeType, e.message!);
+    } catch (e) {
+      throw MediumException(runtimeType, e.toString());
+    }
+  }
+
+  Future<UserModel> getTeacherInfo(String teacherId) async {
+    try {
+      final response = await _firestore
+          .collection(AppCollections.teacher)
+          .doc(teacherId)
+          .get();
+      return UserModel.fromJson(response.data()!);
     } on FirebaseException catch (e) {
       throw MediumException(runtimeType, e.message!);
     } catch (e) {

@@ -3,16 +3,17 @@ import 'package:desktop_math/features/add_teacher/presentation/provider/form_pro
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:provider/provider.dart';
 
-class MyFormPage extends StatefulWidget {
-  const MyFormPage({
+class MyFormWidget extends StatefulWidget {
+  const MyFormWidget({
     super.key,
+    required this.isTeacher,
   });
-
+  final bool isTeacher;
   @override
-  MyFormPageState createState() => MyFormPageState();
+  MyFormWidgetState createState() => MyFormWidgetState();
 }
 
-class MyFormPageState extends State<MyFormPage> {
+class MyFormWidgetState extends State<MyFormWidget> {
   final _formKey = GlobalKey<FormState>(); // Cheia formularului
 
   @override
@@ -120,7 +121,7 @@ class MyFormPageState extends State<MyFormPage> {
                   ),
                   onPressed: () async {
                     if (provider.validateData()) {
-                      await provider.submitForm(context);
+                      await provider.submitForm(context, widget.isTeacher);
 
                       if (context.mounted &&
                           provider.isLoading == false &&

@@ -255,6 +255,8 @@ class AppArguments {
 
   static const String courseId = "CourseId";
   static const String assigmentId = "CourseId";
+  static const String semesterId = "SemesterId";
+
   static const String studentEntity = "StudentEntity";
 
   static const String isTeacher = "IsTeacher";

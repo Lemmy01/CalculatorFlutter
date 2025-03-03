@@ -4,6 +4,7 @@ import 'package:desktop_math/features/view_departaments/domain/entities/semester
 import 'package:desktop_math/features/view_departaments/domain/usecases/get_course_usecase.dart';
 import 'package:desktop_math/features/view_departaments/domain/usecases/get_departaments_usecase.dart';
 import 'package:desktop_math/features/view_departaments/domain/usecases/get_semesters_usecase.dart';
+import 'package:desktop_math/features/view_departaments/domain/usecases/get_teacher_info_usecase.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:injectable/injectable.dart';
 
@@ -12,12 +13,15 @@ class DepartamentHomeProvider extends ChangeNotifier {
   final GetDepartamentsUsecase _getDepartamentsUsecase;
   final GetSemestersUsecase _getSemesterUsecase;
   final GetCoursesUsecase _getCoursesUsecase;
+  final GetTeacherInfoUsecase _getTeacherInfoUsecase;
   DepartamentHomeProvider({
     required GetDepartamentsUsecase getDepartamentsUsecase,
     required GetSemestersUsecase getSemesterUsecase,
     required GetCoursesUsecase getCoursesUsecase,
+    required GetTeacherInfoUsecase getTeacherInfoUsecase,
   })  : _getDepartamentsUsecase = getDepartamentsUsecase,
         _getSemesterUsecase = getSemesterUsecase,
+        _getTeacherInfoUsecase = getTeacherInfoUsecase,
         _getCoursesUsecase = getCoursesUsecase;
 
   bool _isLoading = false;
@@ -31,6 +35,10 @@ class DepartamentHomeProvider extends ChangeNotifier {
   int? _selectedSemester;
   int? _selectedCourse;
 
+  //names
+  String? _teacherName;
+  String? _assistentName;
+
   List<DepartamentEntity> get departaments => _departaments;
   List<SemesterEntity> get semesters => _semesters;
   bool get isLoading => _isLoading;
@@ -38,6 +46,8 @@ class DepartamentHomeProvider extends ChangeNotifier {
   int? get selectedDepartamentIndex => _selectedDepartamentIndex;
   int? get selectedSemester => _selectedSemester;
   int? get selectedCourse => _selectedCourse;
+  String? get teacherName => _teacherName;
+  String? get assistentName => _assistentName;
 
   //api calls
   Future<void> getDepartaments() async {
@@ -152,11 +162,47 @@ class DepartamentHomeProvider extends ChangeNotifier {
 
   void setSelectedCourse(int index) {
     _selectedCourse = index;
+    getNames();
     notifyListeners();
   }
 
   CourseEntity? getSelectedCourseEntity() {
     if (_selectedCourse == null) return null;
     return _courses[_selectedCourse!];
+  }
+
+  Future<void> getNames() async {
+    setIsLoading(true);
+
+    String teacherId = _courses[_selectedCourse!].teacherId;
+
+    await _getTeacherInfoUsecase.call(params: teacherId).then((value) {
+      value.fold(
+        (failure) {
+          setErrorMessage(failure.message);
+          setIsLoading(false);
+        },
+        (user) {
+          setIsLoading(false);
+          _teacherName = user.name;
+        },
+      );
+    });
+
+    String assistentId = _courses[_selectedCourse!]
+        .assistentId; //this is the line that is not working
+
+    await _getTeacherInfoUsecase.call(params: assistentId).then((value) {
+      value.fold(
+        (failure) {
+          setErrorMessage(failure.message);
+          setIsLoading(false);
+        },
+        (user) {
+          setIsLoading(false);
+          _assistentName = user.name;
+        },
+      );
+    });
   }
 }

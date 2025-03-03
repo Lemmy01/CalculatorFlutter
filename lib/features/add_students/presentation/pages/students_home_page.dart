@@ -1,28 +1,27 @@
 import 'package:desktop_math/core/background.dart';
 import 'package:desktop_math/core/consts.dart';
+import 'package:desktop_math/features/add_students/presentation/provider/students_page_provider.dart';
 import 'package:desktop_math/features/add_teacher/presentation/widgets/my_form_widget.dart';
 import 'package:desktop_math/features/add_teacher/presentation/provider/form_provider.dart';
-import 'package:desktop_math/features/add_teacher/presentation/provider/home_page_provider.dart';
-import 'package:desktop_math/features/view_departaments/domain/entities/departament_entity.dart';
-import 'package:desktop_math/features/view_departaments/presentation/provider/departament_home_provider.dart';
 import 'package:desktop_math/features/view_departaments/presentation/widgets/custom_button.dart';
+import 'package:desktop_math/features/view_departaments/presentation/widgets/select_semester_widget.dart';
 import 'package:desktop_math/injection.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
-class TeachersHomePage extends StatefulWidget {
-  const TeachersHomePage({super.key});
+class StudentsHomePage extends StatefulWidget {
+  const StudentsHomePage({super.key});
 
   @override
-  State<TeachersHomePage> createState() => _TeacherHomePageState();
+  State<StudentsHomePage> createState() => _StudentHomePageState();
 }
 
-class _TeacherHomePageState extends State<TeachersHomePage> {
-  late HomePageProvider _provider;
+class _StudentHomePageState extends State<StudentsHomePage> {
+  late StudentPageProvider _provider;
   @override
   void initState() {
-    _provider = context.read<HomePageProvider>();
+    _provider = context.read<StudentPageProvider>();
     // Set a listener to the provider's isError property
     _provider.addListener(showDialogIfError);
 
@@ -30,13 +29,13 @@ class _TeacherHomePageState extends State<TeachersHomePage> {
   }
 
   void showDialogIfError() async {
-    if (context.read<DepartamentHomeProvider>().errorMessage != null) {
+    if (context.read<StudentPageProvider>().errorMessage != null) {
       await showDialog<String>(
         context: context,
         builder: (_) => ContentDialog(
           title: const Text('An error occurred'),
           content: Text(
-            context.read<DepartamentHomeProvider>().errorMessage!,
+            context.read<StudentPageProvider>().errorMessage!,
           ),
           actions: [
             FilledButton(
@@ -47,7 +46,7 @@ class _TeacherHomePageState extends State<TeachersHomePage> {
         ),
       );
       if (mounted) {
-        context.read<DepartamentHomeProvider>().setErrorMessage(null);
+        context.read<StudentPageProvider>().setErrorMessage(null);
       }
     }
   }
@@ -64,7 +63,7 @@ class _TeacherHomePageState extends State<TeachersHomePage> {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
     return Background(
-      child: ScaffoldPage(content: Consumer<HomePageProvider>(
+      child: ScaffoldPage(content: Consumer<StudentPageProvider>(
         builder: (context, provider, _) {
           if (provider.isLoading) {
             return const Center(child: ProgressBar());
@@ -115,20 +114,23 @@ class _TeacherHomePageState extends State<TeachersHomePage> {
                               w: w,
                               onPressed: () {
                                 showDialog(
-                                    context: context,
-                                    builder: (_) {
-                                      DepartamentEntity departamentEntity =
-                                          provider.selectedDepartament!;
-                                      return ChangeNotifierProvider(
-                                          create: (_) => getIt<FormProvider>()
-                                            ..setDepartament(departamentEntity),
-                                          builder: (context, child) =>
-                                              const MyFormWidget(
-                                                isTeacher: true,
-                                              ));
-                                    });
+                                  context: context,
+                                  builder: (_) {
+                                    return ChangeNotifierProvider(
+                                      create: (_) => getIt<FormProvider>()
+                                        ..setSemesterId(provider
+                                            .semesters[
+                                                provider.selectedSemester!]
+                                            .id),
+                                      builder: (context, child) =>
+                                          const MyFormWidget(
+                                        isTeacher: false,
+                                      ),
+                                    );
+                                  },
+                                );
                               },
-                              title: "Add teacher",
+                              title: "Add student",
                               color: AppColors.onTertiaryContainer,
                             ),
                           CustomButton(
@@ -147,6 +149,56 @@ class _TeacherHomePageState extends State<TeachersHomePage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            SelectSemester(
+                              h: h,
+                              lenght: provider.getSemesterLenght(),
+                              onTap: (int index) async {
+                                provider.setSelectedSemester(index);
+                                await provider.getStudents();
+                              },
+                              selectedSemester: provider.selectedSemester,
+                              getTitle: (int index) {
+                                return provider
+                                    .getSemester(index)
+                                    .semesterNumber
+                                    .toString();
+                              },
+                            ),
+                            if (provider.selectedTeacher != null)
+                              Container(
+                                  // decoration: BoxDecoration(
+                                  //   color: AppColors.primaryContainer,
+                                  //   borderRadius: BorderRadius.circular(10),
+                                  // ),
+                                  height: h > 600 ? h * 0.65 : h * 0.6,
+                                  width: w > 800 ? w * 0.4 : w * 0.3,
+                                  padding: EdgeInsets.all(w * 0.01),
+                                  alignment: Alignment.topLeft,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                          "Student name: ${provider.selectedTeacher!.name}"),
+                                      SizedBox(height: h * 0.01),
+                                      Text(
+                                          "Student email: ${provider.selectedTeacher!.email}"),
+                                      SizedBox(height: h * 0.01),
+                                      Text(
+                                        "Student phone: ${provider.selectedTeacher!.phoneNumber}",
+                                      ),
+                                      SizedBox(height: h * 0.01),
+                                      Text(
+                                        "Student father name: ${provider.selectedTeacher!.fatherName}",
+                                      ),
+                                      SizedBox(height: h * 0.01),
+                                      Text(
+                                        "Student mother name: ${provider.selectedTeacher!.motherName}",
+                                      ),
+                                      SizedBox(height: h * 0.01),
+                                    ],
+                                  )),
                             SizedBox(
                               // decoration: BoxDecoration(
                               //   color: AppColors.secondary,
@@ -155,7 +207,7 @@ class _TeacherHomePageState extends State<TeachersHomePage> {
                               height: h > 600 ? h * 0.65 : h * 0.6,
                               width: w > 800 ? w * 0.2 : w * 0.3,
                               child: ListView.builder(
-                                itemCount: provider.teachers.length,
+                                itemCount: provider.students.length,
                                 itemBuilder: (_, index) {
                                   return ListTile(
                                     tileColor:
@@ -168,12 +220,12 @@ class _TeacherHomePageState extends State<TeachersHomePage> {
                                                 AppColors.primaryFixed,
                                               ),
                                     title: Text(
-                                      provider.teachers[index].name,
+                                      provider.students[index].name,
                                       style: const TextStyle(
                                           color: AppColors.white),
                                     ),
                                     subtitle: Text(
-                                      provider.teachers[index].email,
+                                      provider.students[index].email,
                                       style: const TextStyle(
                                           color: AppColors.white),
                                     ),
@@ -184,41 +236,6 @@ class _TeacherHomePageState extends State<TeachersHomePage> {
                                 },
                               ),
                             ),
-                            if (provider.selectedTeacher != null)
-                              Container(
-                                  // decoration: BoxDecoration(
-                                  //   color: AppColors.primaryContainer,
-                                  //   borderRadius: BorderRadius.circular(10),
-                                  // ),
-                                  height: h > 600 ? h * 0.65 : h * 0.6,
-                                  width: w > 800 ? w * 0.7 : w * 0.7,
-                                  padding: EdgeInsets.all(w * 0.01),
-                                  alignment: Alignment.topLeft,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                          "Teacher name: ${provider.selectedTeacher!.name}"),
-                                      SizedBox(height: h * 0.01),
-                                      Text(
-                                          "Teacher email: ${provider.selectedTeacher!.email}"),
-                                      SizedBox(height: h * 0.01),
-                                      Text(
-                                        "Teacher phone: ${provider.selectedTeacher!.phoneNumber}",
-                                      ),
-                                      SizedBox(height: h * 0.01),
-                                      Text(
-                                        "Teacher father name: ${provider.selectedTeacher!.fatherName}",
-                                      ),
-                                      SizedBox(height: h * 0.01),
-                                      Text(
-                                        "Teacher mother name: ${provider.selectedTeacher!.motherName}",
-                                      ),
-                                      SizedBox(height: h * 0.01),
-                                    ],
-                                  )),
                           ],
                         ),
                       //   Row(
@@ -349,7 +366,7 @@ class _TeacherHomePageState extends State<TeachersHomePage> {
 class DepartamentRow extends StatelessWidget {
   const DepartamentRow({super.key, required this.provider});
 
-  final HomePageProvider provider;
+  final StudentPageProvider provider;
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -369,8 +386,9 @@ class DepartamentRow extends StatelessWidget {
             child: GestureDetector(
               onTap: () async {
                 provider.setSelectedDepartamentIndex(index);
+                await provider.getSemesters();
 
-                await provider.getTeachers();
+                // await provider.getTeachers();
               },
               child: Container(
                 padding: EdgeInsets.all(width * 0.005),

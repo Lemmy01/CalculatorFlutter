@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:desktop_math/core/consts.dart';
+import 'package:desktop_math/features/add_students/domain/usecases/add_student_usecase.dart';
 import 'package:desktop_math/features/add_teacher/domain/entities/user_entity.dart';
 import 'package:desktop_math/features/add_teacher/domain/usecases/add_teacher_usecase.dart';
 import 'package:desktop_math/features/view_departaments/domain/entities/departament_entity.dart';
@@ -10,6 +11,7 @@ import 'package:injectable/injectable.dart';
 @injectable
 class FormProvider extends ChangeNotifier {
   final AddTeacherUsecase _addTeacherUsecase;
+  final AddStudentUsecase _addStudentUsecase;
 
   bool? _isLoading;
   String? _isError;
@@ -17,12 +19,16 @@ class FormProvider extends ChangeNotifier {
   String? _email;
   String? _password;
   DepartamentEntity? _departament;
+  String? _semesterId;
   int? _phoneNumber;
   String? _fatherName;
   String? _motherName;
 
-  FormProvider({required AddTeacherUsecase addTeacherUsecase})
-      : _addTeacherUsecase = addTeacherUsecase;
+  FormProvider(
+      {required AddTeacherUsecase addTeacherUsecase,
+      required AddStudentUsecase addStudentUsecase})
+      : _addStudentUsecase = addStudentUsecase,
+        _addTeacherUsecase = addTeacherUsecase;
 
   bool? get isLoading => _isLoading;
   String? get isError => _isError;
@@ -36,6 +42,11 @@ class FormProvider extends ChangeNotifier {
 
   void setIsLoading(bool? value) {
     _isLoading = value;
+    notifyListeners();
+  }
+
+  void setSemesterId(String? value) {
+    _semesterId = value;
     notifyListeners();
   }
 
@@ -99,7 +110,7 @@ class FormProvider extends ChangeNotifier {
         _phoneNumber.toString().length == 10;
   }
 
-  Future<void> submitForm(BuildContext context) async {
+  Future<void> submitForm(BuildContext context, bool isTeacher) async {
     setIsLoading(true);
 
     UserEntity user = UserEntity(
@@ -110,41 +121,79 @@ class FormProvider extends ChangeNotifier {
       fatherName: _fatherName!,
       motherName: _motherName!,
     );
-    (await _addTeacherUsecase.call(params: {
-      AppArguments.userEntity: user,
-      AppArguments.departament: _departament!.id,
-      AppArguments.password: _password,
-    }))
-        .fold(
-      (failure) async {
-        await displayInfoBar(context, builder: (context, close) {
-          return InfoBar(
-            title: const Text('Error'),
-            content: Text(failure.message),
-            action: IconButton(
-              icon: const Icon(FluentIcons.clear),
-              onPressed: close,
-            ),
-            severity: InfoBarSeverity.warning,
-          );
-        });
-      },
-      (_) async {
-        await displayInfoBar(context, builder: (context, close) {
-          return InfoBar(
-            title: const Text('Succes'),
-            content: const Text('Teacher created succesfully'),
-            action: IconButton(
-              icon: const Icon(FluentIcons.clear),
-              onPressed: close,
-            ),
-            severity: InfoBarSeverity.warning,
-          );
-        });
-        reset();
-        // if (context.mounted) Navigator.pop(context);
-      },
-    );
+    if (isTeacher) {
+      (await _addTeacherUsecase.call(params: {
+        AppArguments.userEntity: user,
+        AppArguments.departament: _departament!.id,
+        AppArguments.password: _password,
+      }))
+          .fold(
+        (failure) async {
+          await displayInfoBar(context, builder: (context, close) {
+            return InfoBar(
+              title: const Text('Error'),
+              content: Text(failure.message),
+              action: IconButton(
+                icon: const Icon(FluentIcons.clear),
+                onPressed: close,
+              ),
+              severity: InfoBarSeverity.warning,
+            );
+          });
+        },
+        (_) async {
+          await displayInfoBar(context, builder: (context, close) {
+            return InfoBar(
+              title: const Text('Succes'),
+              content: const Text('Teacher created succesfully'),
+              action: IconButton(
+                icon: const Icon(FluentIcons.clear),
+                onPressed: close,
+              ),
+              severity: InfoBarSeverity.warning,
+            );
+          });
+          reset();
+          // if (context.mounted) Navigator.pop(context);
+        },
+      );
+    } else {
+      (await _addStudentUsecase.call(params: {
+        AppArguments.userEntity: user,
+        AppArguments.semesterId: _semesterId,
+        AppArguments.password: _password,
+      }))
+          .fold(
+        (failure) async {
+          await displayInfoBar(context, builder: (context, close) {
+            return InfoBar(
+              title: const Text('Error'),
+              content: Text(failure.message),
+              action: IconButton(
+                icon: const Icon(FluentIcons.clear),
+                onPressed: close,
+              ),
+              severity: InfoBarSeverity.warning,
+            );
+          });
+        },
+        (_) async {
+          await displayInfoBar(context, builder: (context, close) {
+            return InfoBar(
+              title: const Text('Succes'),
+              content: const Text('Teacher created succesfully'),
+              action: IconButton(
+                icon: const Icon(FluentIcons.clear),
+                onPressed: close,
+              ),
+              severity: InfoBarSeverity.warning,
+            );
+          });
+          reset();
+          // if (context.mounted) Navigator.pop(context);
+        },
+      );
+    }
 
     notifyListeners();
     setIsLoading(false);

@@ -2,9 +2,10 @@ import 'dart:ui';
 
 import 'package:desktop_math/core/background.dart';
 import 'package:desktop_math/core/consts.dart';
+import 'package:desktop_math/features/add_students/presentation/pages/students_home_page.dart';
+import 'package:desktop_math/features/add_students/presentation/provider/students_page_provider.dart';
 import 'package:desktop_math/features/add_teacher/presentation/pages/teachers_home_page.dart';
 import 'package:desktop_math/features/add_teacher/presentation/provider/home_page_provider.dart';
-import 'package:desktop_math/features/users_page/presentation/pages/users_page.dart';
 import 'package:desktop_math/features/view_departaments/presentation/pages/add_course_page.dart';
 import 'package:desktop_math/features/view_departaments/presentation/provider/departament_home_provider.dart';
 import 'package:desktop_math/features/view_departaments/presentation/pages/departament_home_page.dart';
@@ -111,6 +112,9 @@ class MyApp extends StatelessWidget {
                       getIt<DepartamentHomeProvider>()..getDepartaments()),
               ChangeNotifierProvider(
                   create: (_) => getIt<HomePageProvider>()..getDepartaments()),
+              ChangeNotifierProvider(
+                  create: (_) =>
+                      getIt<StudentPageProvider>()..getDepartaments()),
             ],
             child: const Background(
               child: MyHomePage(),
@@ -187,7 +191,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
                 //use Font Awsome Icons for the icon,
                 icon: const FaIcon(FontAwesomeIcons.userGraduate),
                 title: const Text('Students'),
-                body: const UsersPage()),
+                body: const StudentsHomePage()),
             PaneItem(
               //use Font Awsome Icons for the icon,
               icon: const FaIcon(FluentIcons.cancel),
