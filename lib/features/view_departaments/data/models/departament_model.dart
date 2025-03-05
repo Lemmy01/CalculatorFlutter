@@ -1,3 +1,4 @@
+import 'package:desktop_math/core/consts.dart';
 import 'package:desktop_math/features/view_departaments/domain/entities/departament_entity.dart';
 
 class DepartamentModel extends DepartamentEntity {
@@ -9,17 +10,17 @@ class DepartamentModel extends DepartamentEntity {
 
   factory DepartamentModel.fromJson(Map<String, dynamic> json) {
     return DepartamentModel(
-      id: json['id'],
-      name: json['Name'],
-      facultyId: json['FacultateId'],
+      id: json[AppFields.id],
+      name: json[AppFields.name],
+      facultyId: json[AppFields.facultyId],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'Name': name,
-      'FacultateId': facultyId,
+      AppFields.id: id,
+      AppFields.name: name,
+      AppFields.facultyId: facultyId,
     };
   }
 }

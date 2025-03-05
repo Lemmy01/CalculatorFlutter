@@ -157,4 +157,12 @@ class StudentPageProvider extends ChangeNotifier {
     notifyListeners();
     setIsLoading(false);
   }
+
+  Future<void> clear() async {
+    _departaments.clear();
+    _students.clear();
+    _selectedDepartamentIndex = null;
+    _selectedStudentIndex = null;
+    notifyListeners();
+  }
 }

@@ -51,7 +51,7 @@ class DepartamentHomeProvider extends ChangeNotifier {
 
   //api calls
   Future<void> getDepartaments() async {
-    setIsLoading(true);
+    // setIsLoading(true);
 
     (await _getDepartamentsUsecase.call()).fold(
       (failure) {
@@ -64,7 +64,7 @@ class DepartamentHomeProvider extends ChangeNotifier {
     );
 
     notifyListeners();
-    setIsLoading(false);
+    // setIsLoading(false);
   }
 
   Future<void> getSemesters() async {
@@ -204,5 +204,17 @@ class DepartamentHomeProvider extends ChangeNotifier {
         },
       );
     });
+  }
+
+  Future<void> clear() async {
+    _departaments.clear();
+    _courses.clear();
+    _semesters.clear();
+    _selectedCourse = null;
+    _selectedSemester = null;
+    _selectedDepartamentIndex = null;
+    _teacherName = null;
+    _assistentName = null;
+    notifyListeners();
   }
 }

@@ -34,6 +34,13 @@ import 'features/add_teacher/domain/usecases/get_teacher_usecase.dart' as _i429;
 import 'features/add_teacher/presentation/provider/form_provider.dart' as _i236;
 import 'features/add_teacher/presentation/provider/home_page_provider.dart'
     as _i283;
+import 'features/login/data/datasources/login_service.dart' as _i759;
+import 'features/login/data/repositories/auth_repo_impl.dart' as _i1007;
+import 'features/login/domain/repositories/auth_repo.dart' as _i17;
+import 'features/login/domain/usecases/is_loged_usecase.dart' as _i488;
+import 'features/login/domain/usecases/login_usecase.dart' as _i333;
+import 'features/login/domain/usecases/logout_usecase.dart' as _i1070;
+import 'features/login/presentation/provider/login_provider.dart' as _i571;
 import 'features/view_departaments/data/datasources/departament_api_service.dart'
     as _i971;
 import 'features/view_departaments/data/repositories/departament_repo_impl.dart'
@@ -70,30 +77,39 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
+    gh.lazySingleton<_i406.StudentApiService>(() => _i406.StudentApiService());
     gh.lazySingleton<_i618.TeacherApiService>(() => _i618.TeacherApiService());
+    gh.lazySingleton<_i759.LoginService>(() => _i759.LoginService());
     gh.lazySingleton<_i971.DepartamentApiService>(
         () => _i971.DepartamentApiService());
-    gh.lazySingleton<_i406.StudentApiService>(() => _i406.StudentApiService());
     gh.lazySingleton<_i1006.DepartamentRepository>(() =>
         _i173.DepartamentRepoImpl(
             departamentApiService: gh<_i971.DepartamentApiService>()));
+    gh.lazySingleton<_i540.AddCourseUsecase>(
+        () => _i540.AddCourseUsecase(gh<_i1006.DepartamentRepository>()));
+    gh.lazySingleton<_i94.AddSemesterUsecase>(
+        () => _i94.AddSemesterUsecase(gh<_i1006.DepartamentRepository>()));
     gh.lazySingleton<_i0.GetCoursesUsecase>(
         () => _i0.GetCoursesUsecase(gh<_i1006.DepartamentRepository>()));
     gh.lazySingleton<_i606.GetDepartamentsUsecase>(
         () => _i606.GetDepartamentsUsecase(gh<_i1006.DepartamentRepository>()));
     gh.lazySingleton<_i84.GetSemestersUsecase>(
         () => _i84.GetSemestersUsecase(gh<_i1006.DepartamentRepository>()));
-    gh.lazySingleton<_i94.AddSemesterUsecase>(
-        () => _i94.AddSemesterUsecase(gh<_i1006.DepartamentRepository>()));
-    gh.lazySingleton<_i540.AddCourseUsecase>(
-        () => _i540.AddCourseUsecase(gh<_i1006.DepartamentRepository>()));
     gh.lazySingleton<_i794.GetTeacherInfoUsecase>(
         () => _i794.GetTeacherInfoUsecase(gh<_i1006.DepartamentRepository>()));
+    gh.lazySingleton<_i17.AuthRepo>(
+        () => _i1007.AuthRepoImpl(loginService: gh<_i759.LoginService>()));
     gh.lazySingleton<_i677.AddTeacherRepository>(
         () => _i382.AddTeacherRepoImpl(gh<_i618.TeacherApiService>()));
     gh.factory<_i158.EditDepartamentProvider>(() =>
         _i158.EditDepartamentProvider(
             addSemesterUsecase: gh<_i94.AddSemesterUsecase>()));
+    gh.lazySingleton<_i488.IsLogedInUsecase>(
+        () => _i488.IsLogedInUsecase(gh<_i17.AuthRepo>()));
+    gh.lazySingleton<_i333.LoginUsecase>(
+        () => _i333.LoginUsecase(gh<_i17.AuthRepo>()));
+    gh.lazySingleton<_i1070.LogoutUsecase>(
+        () => _i1070.LogoutUsecase(gh<_i17.AuthRepo>()));
     gh.lazySingleton<_i577.AddStudentsRepository>(
         () => _i778.AddStudentsRepoImpl(gh<_i406.StudentApiService>()));
     gh.factory<_i510.DepartamentHomeProvider>(
@@ -107,6 +123,11 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i907.GetStudentsUsecase(gh<_i577.AddStudentsRepository>()));
     gh.lazySingleton<_i264.AddStudentUsecase>(
         () => _i264.AddStudentUsecase(gh<_i577.AddStudentsRepository>()));
+    gh.factory<_i571.LoginProvider>(() => _i571.LoginProvider(
+          gh<_i333.LoginUsecase>(),
+          gh<_i1070.LogoutUsecase>(),
+          gh<_i488.IsLogedInUsecase>(),
+        ));
     gh.lazySingleton<_i574.AddTeacherUsecase>(
         () => _i574.AddTeacherUsecase(gh<_i677.AddTeacherRepository>()));
     gh.lazySingleton<_i429.GetTeacherUsecase>(

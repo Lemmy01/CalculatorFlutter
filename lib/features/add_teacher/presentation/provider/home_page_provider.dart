@@ -109,4 +109,12 @@ class HomePageProvider extends ChangeNotifier {
     notifyListeners();
     setIsLoading(false);
   }
+
+  Future<void> clear() async {
+    _departaments.clear();
+    _teachers.clear();
+    _selectedDepartamentIndex = null;
+    _selectedTeacherIndex = null;
+    notifyListeners();
+  }
 }

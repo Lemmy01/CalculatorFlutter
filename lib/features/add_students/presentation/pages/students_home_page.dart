@@ -109,7 +109,8 @@ class _StudentHomePageState extends State<StudentsHomePage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          if (provider.selectedDepartamentIndex != null)
+                          if (provider.selectedDepartamentIndex != null &&
+                              provider.selectedSemester != null)
                             CustomButton(
                               w: w,
                               onPressed: () {

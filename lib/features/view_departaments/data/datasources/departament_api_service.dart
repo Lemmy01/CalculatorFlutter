@@ -5,18 +5,36 @@ import 'package:desktop_math/features/add_teacher/data/models/user_model.dart';
 import 'package:desktop_math/features/view_departaments/data/models/course_model.dart';
 import 'package:desktop_math/features/view_departaments/data/models/departament_model.dart';
 import 'package:desktop_math/features/view_departaments/data/models/semester_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 
 @LazySingleton()
 class DepartamentApiService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final User? user = FirebaseAuth.instance.currentUser!;
   Future<List<DepartamentModel>> getDepartaments() async {
     final List<DepartamentModel> departaments = [];
     try {
-      final response = _firestore.collection(AppCollections.departament).get();
-      for (final doc in (await response).docs) {
-        departaments.add(DepartamentModel.fromJson(doc.data()));
+      final faculties = await _firestore
+          .collection(AppCollections.secretaryXFaculty)
+          .where(
+            AppFields.secretaryId,
+            isEqualTo: user!.uid,
+          )
+          .get();
+      for (final faculty in faculties.docs) {
+        final response = await _firestore
+            .collection(AppCollections.departament)
+            .where(
+              AppFields.facultyId,
+              isEqualTo: faculty.data()[AppFields.facultyId],
+            )
+            .get();
+        for (final doc in response.docs) {
+          departaments.add(DepartamentModel.fromJson(doc.data()));
+        }
       }
+
       return departaments;
     } on FirebaseException catch (e) {
       throw MediumException(runtimeType, e.message!);

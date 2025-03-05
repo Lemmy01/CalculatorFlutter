@@ -244,6 +244,9 @@ class AppFields {
   static const String downloadUrl = "DownloadUrl";
   static const String postDate = "PostDate";
   static const String endingTime = "EndingTime";
+
+  static const String secretaryId = "SecretaryId";
+  static const String facultyId = "FacultyId";
 }
 
 class AppArguments {
@@ -285,6 +288,8 @@ class AppCollections {
   static const String message = 'Message';
   static const String contacts = 'Contacts';
   static const String events = 'Events';
+  static const String secretaryXFaculty = 'SecretaryXFaculty';
+  static const String faculty = 'Faculty';
 
   static String addresses = "Addresses";
 

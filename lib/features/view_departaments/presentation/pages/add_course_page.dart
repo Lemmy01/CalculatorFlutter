@@ -52,29 +52,37 @@ class _BodyWidgetState extends State<BodyWidget> {
 
   @override
   void initState() {
-    context.read<AddCourseProvider>().addListener(() async {
-      if (context.read<AddCourseProvider>().getErrorMessage != null) {
-        String message = context.read<AddCourseProvider>().getErrorMessage!;
-        if (mounted) {
-          context.read<AddCourseProvider>().clearErrorMessage();
-        }
-        await displayInfoBar(context, builder: (_, close) {
-          return InfoBar(
-            title: const Text('You can not do that :/'),
-            content: Text(
-              message,
-              style: const TextStyle(color: AppColors.black),
-            ),
-            action: IconButton(
-              icon: const Icon(FluentIcons.clear),
-              onPressed: close,
-            ),
-            severity: InfoBarSeverity.warning,
-          );
-        });
-      }
-    });
+    context.read<AddCourseProvider>().addListener(showErrorFunc);
     super.initState();
+  }
+
+  void showErrorFunc() async {
+    if (context.read<AddCourseProvider>().getErrorMessage != null) {
+      String message = context.read<AddCourseProvider>().getErrorMessage!;
+      if (mounted) {
+        context.read<AddCourseProvider>().clearErrorMessage();
+      }
+      await displayInfoBar(context, builder: (_, close) {
+        return InfoBar(
+          title: const Text('You can not do that :/'),
+          content: Text(
+            message,
+            style: const TextStyle(color: AppColors.black),
+          ),
+          action: IconButton(
+            icon: const Icon(FluentIcons.clear),
+            onPressed: close,
+          ),
+          severity: InfoBarSeverity.warning,
+        );
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    context.read<AddCourseProvider>().removeListener(showErrorFunc);
+    super.dispose();
   }
 
   @override

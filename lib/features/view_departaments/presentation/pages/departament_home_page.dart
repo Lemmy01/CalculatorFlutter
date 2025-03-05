@@ -22,9 +22,7 @@ class _DepartamentHomePageState extends State<DepartamentHomePage> {
   @override
   void initState() {
     _provider = context.read<DepartamentHomeProvider>();
-    // Set a listener to the provider's isError property
     _provider.addListener(showDialogIfError);
-
     super.initState();
   }
 
@@ -40,7 +38,7 @@ class _DepartamentHomePageState extends State<DepartamentHomePage> {
           actions: [
             FilledButton(
               child: const Text('Ok'),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => Navigator.pop(_),
             ),
           ],
         ),

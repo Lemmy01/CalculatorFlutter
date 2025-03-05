@@ -6,6 +6,8 @@ import 'package:desktop_math/features/add_students/presentation/pages/students_h
 import 'package:desktop_math/features/add_students/presentation/provider/students_page_provider.dart';
 import 'package:desktop_math/features/add_teacher/presentation/pages/teachers_home_page.dart';
 import 'package:desktop_math/features/add_teacher/presentation/provider/home_page_provider.dart';
+import 'package:desktop_math/features/login/presentation/pages/login_page.dart';
+import 'package:desktop_math/features/login/presentation/provider/login_provider.dart';
 import 'package:desktop_math/features/view_departaments/presentation/pages/add_course_page.dart';
 import 'package:desktop_math/features/view_departaments/presentation/provider/departament_home_provider.dart';
 import 'package:desktop_math/features/view_departaments/presentation/pages/departament_home_page.dart';
@@ -108,17 +110,25 @@ class MyApp extends StatelessWidget {
           home: MultiProvider(
             providers: [
               ChangeNotifierProvider(
-                  create: (_) =>
-                      getIt<DepartamentHomeProvider>()..getDepartaments()),
+                  create: (_) => getIt<DepartamentHomeProvider>()),
+              ChangeNotifierProvider(create: (_) => getIt<HomePageProvider>()),
               ChangeNotifierProvider(
-                  create: (_) => getIt<HomePageProvider>()..getDepartaments()),
+                  create: (_) => getIt<StudentPageProvider>()),
               ChangeNotifierProvider(
-                  create: (_) =>
-                      getIt<StudentPageProvider>()..getDepartaments()),
+                  create: (_) => getIt<LoginProvider>()..checkLogin()),
             ],
-            child: const Background(
-              child: MyHomePage(),
-            ),
+            builder: (context, child) {
+              return Background(
+                child: Consumer<LoginProvider>(
+                    builder: (context, LoginProvider loginProvider, _) {
+                  if (loginProvider.isLogedIn) {
+                    return const MyHomePage();
+                  } else {
+                    return const LoginPage();
+                  }
+                }),
+              );
+            },
           ),
         );
       },
@@ -140,7 +150,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
   @override
   void initState() {
     windowManager.addListener(this);
-
+    getAllData();
     super.initState();
   }
 
@@ -148,6 +158,30 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
   void dispose() {
     windowManager.removeListener(this);
     super.dispose();
+  }
+
+  Future<void> getAllData() async {
+    if (mounted) {
+      await context.read<DepartamentHomeProvider>().getDepartaments();
+    }
+    if (mounted) {
+      await context.read<HomePageProvider>().getDepartaments();
+    }
+    if (mounted) {
+      await context.read<StudentPageProvider>().getDepartaments();
+    }
+  }
+
+  Future<void> clearProviders() async {
+    if (mounted) {
+      await context.read<DepartamentHomeProvider>().clear();
+    }
+    if (mounted) {
+      await context.read<HomePageProvider>().clear();
+    }
+    if (mounted) {
+      await context.read<StudentPageProvider>().clear();
+    }
   }
 
   @override
@@ -192,6 +226,18 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
                 icon: const FaIcon(FontAwesomeIcons.userGraduate),
                 title: const Text('Students'),
                 body: const StudentsHomePage()),
+            PaneItem(
+              //use Font Awsome Icons for the icon,
+              icon: const FaIcon(FluentIcons.leave),
+              title: const Text('Logout'),
+              onTap: () async {
+                await clearProviders();
+                if (context.mounted) {
+                  Provider.of<LoginProvider>(context, listen: false).logout();
+                }
+              },
+              body: const Background(child: SizedBox()),
+            ),
             PaneItem(
               //use Font Awsome Icons for the icon,
               icon: const FaIcon(FluentIcons.cancel),
