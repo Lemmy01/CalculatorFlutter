@@ -29,7 +29,7 @@ class AuthRepoImpl extends AuthRepo {
   @override
   Future<Either<Failure, void>> login(String email, String password) async {
     try {
-      final result = await _loginService.login(email, password);
+      await _loginService.login(email, password);
       return const Right(null);
     } on MediumException catch (e) {
       return Left(MediumFailure(message: e.message));

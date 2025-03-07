@@ -30,7 +30,7 @@ class _DepartamentHomePageState extends State<DepartamentHomePage> {
     if (context.read<DepartamentHomeProvider>().errorMessage != null) {
       await showDialog<String>(
         context: context,
-        builder: (_) => ContentDialog(
+        builder: (dialogCtx) => ContentDialog(
           title: const Text('An error occurred'),
           content: Text(
             context.read<DepartamentHomeProvider>().errorMessage!,
@@ -38,7 +38,7 @@ class _DepartamentHomePageState extends State<DepartamentHomePage> {
           actions: [
             FilledButton(
               child: const Text('Ok'),
-              onPressed: () => Navigator.pop(_),
+              onPressed: () => Navigator.pop(dialogCtx),
             ),
           ],
         ),
@@ -255,7 +255,6 @@ class _DepartamentHomePageState extends State<DepartamentHomePage> {
                                               ),
                                             ),
                                             subtitle: Text(
-                                              //TODO: Switch with teacher name
                                               course.courseCredits.toString(),
                                               style: TextStyle(
                                                 color: isSelected

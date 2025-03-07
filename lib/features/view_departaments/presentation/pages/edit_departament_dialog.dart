@@ -81,20 +81,15 @@ class EditDepartamentDialogState extends State<EditDepartamentDialog> {
               ),
               actions: [
                 Button(
-                  child: const Text('Cancel'),
+                  child: const Text('Close'),
                   onPressed: () => Navigator.pop(context),
                 ),
-                FilledButton(
-                  // style: ButtonStyle(
-                  //   backgroundColor: !provider.validateData()
-                  //       ? WidgetStateProperty.all(AppColors.grey)
-                  //       : null,
-                  // ),
-                  onPressed: () async {
-                    // TODO: Procesează datele formularului
-                  },
-                  child: const Text('Apply'),
-                ),
+                // FilledButton(
+                //   onPressed: () async {
+                //     //  Procesează datele formularului
+                //   },
+                //   child: const Text('Apply'),
+                // ),
               ],
             ),
     );
