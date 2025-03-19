@@ -1,11 +1,13 @@
-import 'package:desktop_math/core/background.dart';
-import 'package:desktop_math/core/consts.dart';
-import 'package:desktop_math/features/add_students/presentation/provider/students_page_provider.dart';
-import 'package:desktop_math/features/add_teacher/presentation/widgets/my_form_widget.dart';
-import 'package:desktop_math/features/add_teacher/presentation/provider/form_provider.dart';
-import 'package:desktop_math/features/view_departaments/presentation/widgets/custom_button.dart';
-import 'package:desktop_math/features/view_departaments/presentation/widgets/select_semester_widget.dart';
-import 'package:desktop_math/injection.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:usv_hub_management/core/background.dart';
+import 'package:usv_hub_management/core/consts.dart';
+import 'package:usv_hub_management/features/add_students/presentation/provider/students_page_provider.dart';
+import 'package:usv_hub_management/features/add_teacher/presentation/widgets/my_form_widget.dart';
+import 'package:usv_hub_management/features/add_teacher/presentation/provider/form_provider.dart';
+import 'package:usv_hub_management/features/view_departaments/presentation/widgets/custom_button.dart';
+import 'package:usv_hub_management/features/view_departaments/presentation/widgets/display_info_container.dart';
+import 'package:usv_hub_management/features/view_departaments/presentation/widgets/select_semester_widget.dart';
+import 'package:usv_hub_management/injection.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
@@ -151,6 +153,7 @@ class _StudentHomePageState extends State<StudentsHomePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SelectSemester(
+                              w: w,
                               h: h,
                               lenght: provider.getSemesterLenght(),
                               onTap: (int index) async {
@@ -180,24 +183,37 @@ class _StudentHomePageState extends State<StudentsHomePage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                          "Student name: ${provider.selectedTeacher!.name}"),
-                                      SizedBox(height: h * 0.01),
-                                      Text(
-                                          "Student email: ${provider.selectedTeacher!.email}"),
-                                      SizedBox(height: h * 0.01),
-                                      Text(
-                                        "Student phone: ${provider.selectedTeacher!.phoneNumber}",
+                                      DisplayInfoContainer(
+                                        icon: FontAwesomeIcons.user,
+                                        whatToDisplay: "Student name",
+                                        infoToDisplay:
+                                            provider.selectedTeacher!.name,
                                       ),
-                                      SizedBox(height: h * 0.01),
-                                      Text(
-                                        "Student father name: ${provider.selectedTeacher!.fatherName}",
+                                      DisplayInfoContainer(
+                                        icon: FontAwesomeIcons.envelope,
+                                        whatToDisplay: "Student email",
+                                        infoToDisplay:
+                                            provider.selectedTeacher!.email,
                                       ),
-                                      SizedBox(height: h * 0.01),
-                                      Text(
-                                        "Student mother name: ${provider.selectedTeacher!.motherName}",
+                                      DisplayInfoContainer(
+                                        icon: FontAwesomeIcons.phone,
+                                        whatToDisplay: "Student phone",
+                                        infoToDisplay: provider
+                                            .selectedTeacher!.phoneNumber
+                                            .toString(),
                                       ),
-                                      SizedBox(height: h * 0.01),
+                                      DisplayInfoContainer(
+                                        icon: FontAwesomeIcons.user,
+                                        whatToDisplay: "Student father name",
+                                        infoToDisplay: provider
+                                            .selectedTeacher!.fatherName,
+                                      ),
+                                      DisplayInfoContainer(
+                                        icon: FontAwesomeIcons.user,
+                                        whatToDisplay: "Student mother name",
+                                        infoToDisplay: provider
+                                            .selectedTeacher!.motherName,
+                                      ),
                                     ],
                                   )),
                             SizedBox(
@@ -215,7 +231,7 @@ class _StudentHomePageState extends State<StudentsHomePage> {
                                         provider.selectedTeacherIndex == index
                                             ? WidgetStatePropertyAll(
                                                 AppColors.onPrimary
-                                                    .withOpacity(0.5),
+                                                    .withValues(alpha: 0.5),
                                               )
                                             : const WidgetStatePropertyAll(
                                                 AppColors.primaryFixed,
@@ -292,15 +308,15 @@ class _StudentHomePageState extends State<StudentsHomePage> {
                       //                         if (states.isHovered) {
                       //                           return AppColors
                       //                               .onTertiaryContainer
-                      //                               .withOpacity(1);
+                      //                               .withValues(1);
                       //                         }
                       //                         if (states.isPressed) {
                       //                           return AppColors
                       //                               .onTertiaryContainer
-                      //                               .withOpacity(0.5);
+                      //                               .withValues(alpha: 0.5);
                       //                         }
                       //                         return AppColors.onTertiaryContainer
-                      //                             .withOpacity(0.5);
+                      //                             .withValues(alpha: 0.5);
                       //                       }),
                       //                     ),
                       //                     child: const Text("Add a new Course"),
@@ -324,7 +340,7 @@ class _StudentHomePageState extends State<StudentsHomePage> {
                       //                             color: isSelected
                       //                                 ? AppColors.white
                       //                                 : AppColors.white
-                      //                                     .withOpacity(0.5),
+                      //                                     .withValues(alpha: 0.5),
                       //                           ),
                       //                         ),
                       //                         subtitle: Text(
@@ -333,7 +349,7 @@ class _StudentHomePageState extends State<StudentsHomePage> {
                       //                             color: isSelected
                       //                                 ? AppColors.white
                       //                                 : AppColors.white
-                      //                                     .withOpacity(0.5),
+                      //                                     .withValues(alpha: 0.5),
                       //                           ),
                       //                         ),
                       //                         onPressed: () {

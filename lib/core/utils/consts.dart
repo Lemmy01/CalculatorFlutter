@@ -294,9 +294,6 @@ extension ContactsStatusToString on ContactsStatus {
         return 'Pending';
       case ContactsStatus.inactive:
         return 'Inactive';
-
-      default:
-        return '';
     }
   }
 }
@@ -341,9 +338,6 @@ extension AttendanceStatusToString on AttendanceStatus {
         return 'Absent';
       case AttendanceStatus.empty:
         return 'Empty';
-
-      default:
-        return '';
     }
   }
 }

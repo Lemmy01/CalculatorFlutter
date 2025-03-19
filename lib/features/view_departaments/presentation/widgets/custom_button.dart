@@ -22,12 +22,12 @@ class CustomButton extends StatelessWidget {
         style: ButtonStyle(
           backgroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.isHovered) {
-              return color.withOpacity(1);
+              return color.withValues(alpha: 1);
             }
             if (states.isPressed) {
-              return color.withOpacity(0.5);
+              return color.withValues(alpha: 0.5);
             }
-            return color.withOpacity(0.5);
+            return color.withValues(alpha: 0.5);
           }),
         ),
         onPressed: onPressed,

@@ -1,8 +1,8 @@
-import 'package:desktop_math/core/background.dart';
-import 'package:desktop_math/core/consts.dart';
-import 'package:desktop_math/features/add_teacher/domain/entities/user_entity.dart';
-import 'package:desktop_math/features/view_departaments/presentation/provider/add_course_provider.dart';
-import 'package:desktop_math/injection.dart';
+import 'package:usv_hub_management/core/background.dart';
+import 'package:usv_hub_management/core/consts.dart';
+import 'package:usv_hub_management/features/add_teacher/domain/entities/user_entity.dart';
+import 'package:usv_hub_management/features/view_departaments/presentation/provider/add_course_provider.dart';
+import 'package:usv_hub_management/injection.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:provider/provider.dart';
 
@@ -100,7 +100,7 @@ class _BodyWidgetState extends State<BodyWidget> {
                 height: h * 0.8,
                 width: w * 0.8,
                 decoration: BoxDecoration(
-                  color: AppColors.white.withOpacity(0.8),
+                  color: AppColors.white.withValues(alpha: 0.8),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Row(
@@ -254,7 +254,7 @@ class _BodyWidgetState extends State<BodyWidget> {
                                                   borderRadius:
                                                       BorderRadius.circular(10),
                                                   color: AppColors.white
-                                                      .withOpacity(0.8)),
+                                                      .withValues(alpha: 0.8)),
                                               padding: EdgeInsets.symmetric(
                                                   vertical: h * 0.0015,
                                                   horizontal: h * 0.005),
@@ -485,7 +485,7 @@ class EnumDropdown extends StatelessWidget {
       ),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.8),
+          color: Colors.white.withValues(alpha: 0.8),
           borderRadius: const BorderRadiusDirectional.horizontal(
             start: Radius.circular(4.0),
           ),

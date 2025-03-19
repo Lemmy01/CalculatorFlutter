@@ -1,4 +1,4 @@
-import 'package:desktop_math/core/consts.dart';
+import 'package:usv_hub_management/core/consts.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -54,7 +54,7 @@ ThemeData darkTheme() {
         backgroundColor: WidgetStateProperty.resolveWith<Color>(
           (Set<WidgetState> states) {
             if (states.contains(WidgetState.pressed)) {
-              return AppColors.primary.withOpacity(0.5);
+              return AppColors.primary.withValues(alpha: 0.5);
             }
             return AppColors.primary;
           },

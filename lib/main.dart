@@ -1,27 +1,57 @@
+import 'dart:developer';
+import 'dart:ffi' show DynamicLibrary, DynamicLibraryExtension, Int32;
 import 'dart:ui';
 
-import 'package:desktop_math/core/background.dart';
-import 'package:desktop_math/core/consts.dart';
-import 'package:desktop_math/features/add_students/presentation/pages/students_home_page.dart';
-import 'package:desktop_math/features/add_students/presentation/provider/students_page_provider.dart';
-import 'package:desktop_math/features/add_teacher/presentation/pages/teachers_home_page.dart';
-import 'package:desktop_math/features/add_teacher/presentation/provider/home_page_provider.dart';
-import 'package:desktop_math/features/login/presentation/pages/login_page.dart';
-import 'package:desktop_math/features/login/presentation/provider/login_provider.dart';
-import 'package:desktop_math/features/view_departaments/presentation/pages/add_course_page.dart';
-import 'package:desktop_math/features/view_departaments/presentation/provider/departament_home_provider.dart';
-import 'package:desktop_math/features/view_departaments/presentation/pages/departament_home_page.dart';
-import 'package:desktop_math/injection.dart';
+import 'package:usv_hub_management/core/background.dart';
+import 'package:usv_hub_management/core/consts.dart';
+import 'package:usv_hub_management/features/add_students/presentation/pages/students_home_page.dart';
+import 'package:usv_hub_management/features/add_students/presentation/provider/students_page_provider.dart';
+import 'package:usv_hub_management/features/add_teacher/presentation/pages/teachers_home_page.dart';
+import 'package:usv_hub_management/features/add_teacher/presentation/provider/home_page_provider.dart';
+import 'package:usv_hub_management/features/login/presentation/pages/login_page.dart';
+import 'package:usv_hub_management/features/login/presentation/provider/login_provider.dart';
+import 'package:usv_hub_management/features/view_departaments/presentation/pages/add_course_page.dart';
+import 'package:usv_hub_management/features/view_departaments/presentation/provider/departament_home_provider.dart';
+import 'package:usv_hub_management/features/view_departaments/presentation/pages/departament_home_page.dart';
+import 'package:usv_hub_management/injection.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:win32/win32.dart';
 import 'package:window_manager/window_manager.dart';
 
 enum Operations { add, subtract, multiply, divide }
 
+void setDpiAwareness() {
+  final shcore = DynamicLibrary.open('Shcore.dll');
+  final setProcessDpiAwareness =
+      shcore.lookupFunction<Int32 Function(Int32), int Function(int)>(
+          'SetProcessDpiAwareness');
+
+  // Set process DPI awareness to "Per-Monitor DPI Aware"
+  setProcessDpiAwareness(2);
+}
+
 //flutter pub run build_runner watch --delete-conflicting-outputs
+int getScreenWidth() {
+  final hdc = GetDC(NULL);
+  final dpi = GetDeviceCaps(hdc, LOGPIXELSX);
+  log('DPI: $dpi');
+  ReleaseDC(NULL, hdc);
+
+  return GetSystemMetricsForDpi(SM_CXSCREEN, dpi);
+}
+
+int getScreenHeight() {
+  final hdc = GetDC(NULL);
+  final dpi = GetDeviceCaps(hdc, LOGPIXELSY);
+  ReleaseDC(NULL, hdc);
+
+  return GetSystemMetricsForDpi(SM_CYSCREEN, dpi);
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -36,7 +66,12 @@ void main() async {
     ),
   );
 
+  setDpiAwareness();
   configureDependencies();
+
+  final int screenWidth = getScreenWidth();
+  final int screenHeight = getScreenHeight();
+
   await windowManager.ensureInitialized();
 
   await windowManager.waitUntilReadyToShow().then((_) async {
@@ -47,21 +82,24 @@ void main() async {
     await windowManager.setPosition(Offset.zero);
 
     // Disable resizing and hide title bar
-    await windowManager.maximize();
-    await windowManager.setMinimumSize(const Size(800, 600));
+    // await windowManager.maximize();
+    await windowManager
+        .setMinimumSize(Size(screenWidth.toDouble(), screenHeight.toDouble()));
+    await windowManager
+        .setSize(Size(screenWidth.toDouble(), screenHeight.toDouble()));
     // Dezactivează maximizarea
     //await windowManager.setMaximizable(false);
 
     // Dezactivează minimizarea
-    // await windowManager.setMinimizable(false);
+    //await windowManager.setMinimizable(false);
 
     // Dezactivează redimensionarea
     // await windowManager.setResizable(false);
 
-    // await windowManager.setTitleBarStyle(TitleBarStyle.hidden);
+    await windowManager.setTitleBarStyle(TitleBarStyle.normal);
 
     // Set the window to full screen (makes the window cover the entire screen)
-    //  await windowManager.setFullScreen(true);
+    //await windowManager.setFullScreen(true);
 
     // Show the window
     await windowManager.show();
@@ -93,18 +131,18 @@ class MyApp extends StatelessWidget {
             brightness: Brightness.light,
             accentColor: Colors.orange,
             typography: Typography.raw(
-              display: TextStyle(color: Colors.white.withOpacity(0.8)),
-              body: TextStyle(color: Colors.white.withOpacity(0.8)),
-              caption: TextStyle(color: Colors.white.withOpacity(0.8)),
+              display: TextStyle(color: Colors.white.withValues(alpha: 0.8)),
+              body: TextStyle(color: Colors.white.withValues(alpha: 0.8)),
+              caption: TextStyle(color: Colors.white.withValues(alpha: 0.8)),
             ),
           ),
           darkTheme: FluentThemeData(
             brightness: Brightness.dark,
             accentColor: Colors.orange,
             typography: Typography.raw(
-              display: TextStyle(color: Colors.white.withOpacity(0.8)),
-              body: TextStyle(color: Colors.white.withOpacity(0.8)),
-              caption: TextStyle(color: Colors.white.withOpacity(0.8)),
+              display: TextStyle(color: Colors.white.withValues(alpha: 0.8)),
+              body: TextStyle(color: Colors.white.withValues(alpha: 0.8)),
+              caption: TextStyle(color: Colors.white.withValues(alpha: 0.8)),
             ),
           ),
           home: MultiProvider(

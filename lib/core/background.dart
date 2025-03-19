@@ -1,4 +1,4 @@
-import 'package:desktop_math/core/consts.dart';
+import 'package:usv_hub_management/core/consts.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 
 class Background extends StatelessWidget {

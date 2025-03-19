@@ -1,10 +1,10 @@
-import 'package:desktop_math/features/view_departaments/domain/entities/course_entity.dart';
-import 'package:desktop_math/features/view_departaments/domain/entities/departament_entity.dart';
-import 'package:desktop_math/features/view_departaments/domain/entities/semester_entity.dart';
-import 'package:desktop_math/features/view_departaments/domain/usecases/get_course_usecase.dart';
-import 'package:desktop_math/features/view_departaments/domain/usecases/get_departaments_usecase.dart';
-import 'package:desktop_math/features/view_departaments/domain/usecases/get_semesters_usecase.dart';
-import 'package:desktop_math/features/view_departaments/domain/usecases/get_teacher_info_usecase.dart';
+import 'package:usv_hub_management/features/view_departaments/domain/entities/course_entity.dart';
+import 'package:usv_hub_management/features/view_departaments/domain/entities/departament_entity.dart';
+import 'package:usv_hub_management/features/view_departaments/domain/entities/semester_entity.dart';
+import 'package:usv_hub_management/features/view_departaments/domain/usecases/get_course_usecase.dart';
+import 'package:usv_hub_management/features/view_departaments/domain/usecases/get_departaments_usecase.dart';
+import 'package:usv_hub_management/features/view_departaments/domain/usecases/get_semesters_usecase.dart';
+import 'package:usv_hub_management/features/view_departaments/domain/usecases/get_teacher_info_usecase.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:injectable/injectable.dart';
 

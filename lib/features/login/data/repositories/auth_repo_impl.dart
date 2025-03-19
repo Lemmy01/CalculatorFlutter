@@ -1,11 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dartz/dartz.dart';
-import 'package:desktop_math/core/errors/exceptions.dart';
-import 'package:desktop_math/features/login/data/datasources/login_service.dart';
+import 'package:usv_hub_management/core/errors/exceptions.dart';
+import 'package:usv_hub_management/features/login/data/datasources/login_service.dart';
 import 'package:injectable/injectable.dart';
 
-import 'package:desktop_math/core/errors/failures.dart';
-import 'package:desktop_math/features/login/domain/repositories/auth_repo.dart';
+import 'package:usv_hub_management/core/errors/failures.dart';
+import 'package:usv_hub_management/features/login/domain/repositories/auth_repo.dart';
 
 @LazySingleton(as: AuthRepo)
 class AuthRepoImpl extends AuthRepo {

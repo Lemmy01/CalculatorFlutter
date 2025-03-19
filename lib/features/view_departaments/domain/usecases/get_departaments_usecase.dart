@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:desktop_math/core/errors/failures.dart';
-import 'package:desktop_math/core/usecase/usecase.dart';
-import 'package:desktop_math/features/view_departaments/domain/entities/departament_entity.dart';
-import 'package:desktop_math/features/view_departaments/domain/repositories/departament_repo.dart';
+import 'package:usv_hub_management/core/errors/failures.dart';
+import 'package:usv_hub_management/core/usecase/usecase.dart';
+import 'package:usv_hub_management/features/view_departaments/domain/entities/departament_entity.dart';
+import 'package:usv_hub_management/features/view_departaments/domain/repositories/departament_repo.dart';
 import 'package:injectable/injectable.dart';
 
 @LazySingleton()

@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:desktop_math/core/consts.dart';
-import 'package:desktop_math/core/errors/exceptions.dart';
-import 'package:desktop_math/core/service/firebase_auth.dart';
-import 'package:desktop_math/features/add_teacher/data/models/user_model.dart';
+import 'package:usv_hub_management/core/consts.dart';
+import 'package:usv_hub_management/core/errors/exceptions.dart';
+import 'package:usv_hub_management/core/service/firebase_auth.dart';
+import 'package:usv_hub_management/features/add_teacher/data/models/user_model.dart';
 import 'package:injectable/injectable.dart';
 
 @LazySingleton()

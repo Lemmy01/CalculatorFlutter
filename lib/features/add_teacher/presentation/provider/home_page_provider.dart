@@ -1,7 +1,7 @@
-import 'package:desktop_math/features/add_teacher/domain/entities/user_entity.dart';
-import 'package:desktop_math/features/add_teacher/domain/usecases/get_teacher_usecase.dart';
-import 'package:desktop_math/features/view_departaments/domain/entities/departament_entity.dart';
-import 'package:desktop_math/features/view_departaments/domain/usecases/get_departaments_usecase.dart';
+import 'package:usv_hub_management/features/add_teacher/domain/entities/user_entity.dart';
+import 'package:usv_hub_management/features/add_teacher/domain/usecases/get_teacher_usecase.dart';
+import 'package:usv_hub_management/features/view_departaments/domain/entities/departament_entity.dart';
+import 'package:usv_hub_management/features/view_departaments/domain/usecases/get_departaments_usecase.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:injectable/injectable.dart';
 

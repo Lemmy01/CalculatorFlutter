@@ -1,10 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
-import 'package:desktop_math/core/consts.dart';
-import 'package:desktop_math/features/add_students/domain/usecases/add_student_usecase.dart';
-import 'package:desktop_math/features/add_teacher/domain/entities/user_entity.dart';
-import 'package:desktop_math/features/add_teacher/domain/usecases/add_teacher_usecase.dart';
-import 'package:desktop_math/features/view_departaments/domain/entities/departament_entity.dart';
+import 'package:usv_hub_management/core/consts.dart';
+import 'package:usv_hub_management/features/add_students/domain/usecases/add_student_usecase.dart';
+import 'package:usv_hub_management/features/add_teacher/domain/entities/user_entity.dart';
+import 'package:usv_hub_management/features/add_teacher/domain/usecases/add_teacher_usecase.dart';
+import 'package:usv_hub_management/features/view_departaments/domain/entities/departament_entity.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:injectable/injectable.dart';
 

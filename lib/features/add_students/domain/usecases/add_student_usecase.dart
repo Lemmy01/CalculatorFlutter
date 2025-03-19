@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:desktop_math/core/consts.dart';
-import 'package:desktop_math/core/errors/failures.dart';
-import 'package:desktop_math/core/usecase/usecase.dart';
-import 'package:desktop_math/features/add_students/domain/repositories/add_students_repository.dart';
+import 'package:usv_hub_management/core/consts.dart';
+import 'package:usv_hub_management/core/errors/failures.dart';
+import 'package:usv_hub_management/core/usecase/usecase.dart';
+import 'package:usv_hub_management/features/add_students/domain/repositories/add_students_repository.dart';
 import 'package:injectable/injectable.dart';
 
 @LazySingleton()

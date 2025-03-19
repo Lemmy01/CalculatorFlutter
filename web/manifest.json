@@ -1,6 +1,6 @@
 {
-    "name": "desktop_math",
-    "short_name": "desktop_math",
+    "name": "usv_hub_management",
+    "short_name": "usv_hub_management",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

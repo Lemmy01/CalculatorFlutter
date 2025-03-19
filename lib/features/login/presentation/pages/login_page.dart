@@ -1,6 +1,6 @@
-import 'package:desktop_math/core/background.dart';
-import 'package:desktop_math/core/consts.dart';
-import 'package:desktop_math/features/login/presentation/provider/login_provider.dart';
+import 'package:usv_hub_management/core/background.dart';
+import 'package:usv_hub_management/core/consts.dart';
+import 'package:usv_hub_management/features/login/presentation/provider/login_provider.dart';
 
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:provider/provider.dart';
@@ -90,7 +90,7 @@ class _BodyWidgetState extends State<BodyWidget> {
                 // height: h * 0.25,
                 width: w * 0.2,
                 decoration: BoxDecoration(
-                  color: AppColors.white.withOpacity(0.8),
+                  color: AppColors.white.withValues(alpha: 0.8),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Row(
@@ -209,7 +209,7 @@ class EnumDropdown extends StatelessWidget {
       ),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.8),
+          color: Colors.white.withValues(alpha: 0.8),
           borderRadius: const BorderRadiusDirectional.horizontal(
             start: Radius.circular(4.0),
           ),

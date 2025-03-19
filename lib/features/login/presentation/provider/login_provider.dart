@@ -1,7 +1,7 @@
-import 'package:desktop_math/core/consts.dart';
-import 'package:desktop_math/features/login/domain/usecases/is_loged_usecase.dart';
-import 'package:desktop_math/features/login/domain/usecases/login_usecase.dart';
-import 'package:desktop_math/features/login/domain/usecases/logout_usecase.dart';
+import 'package:usv_hub_management/core/consts.dart';
+import 'package:usv_hub_management/features/login/domain/usecases/is_loged_usecase.dart';
+import 'package:usv_hub_management/features/login/domain/usecases/login_usecase.dart';
+import 'package:usv_hub_management/features/login/domain/usecases/logout_usecase.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:injectable/injectable.dart';
 
@@ -73,6 +73,7 @@ class LoginProvider extends ChangeNotifier {
     }, (r) {
       _errorMessage = null;
       _isLogedIn = false;
+      clearProvider();
     });
     _isLoading = false;
     notifyListeners();
@@ -107,6 +108,14 @@ class LoginProvider extends ChangeNotifier {
 
   void setPassword(String password) {
     _password = password;
+    notifyListeners();
+  }
+
+  void clearProvider() {
+    _email = null;
+    _password = null;
+    _errorMessage = null;
+    _isLogedIn = false;
     notifyListeners();
   }
 }

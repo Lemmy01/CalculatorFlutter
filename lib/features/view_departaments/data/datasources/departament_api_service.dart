@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:desktop_math/core/consts.dart';
-import 'package:desktop_math/core/errors/exceptions.dart';
-import 'package:desktop_math/features/add_teacher/data/models/user_model.dart';
-import 'package:desktop_math/features/view_departaments/data/models/course_model.dart';
-import 'package:desktop_math/features/view_departaments/data/models/departament_model.dart';
-import 'package:desktop_math/features/view_departaments/data/models/semester_model.dart';
+import 'package:usv_hub_management/core/consts.dart';
+import 'package:usv_hub_management/core/errors/exceptions.dart';
+import 'package:usv_hub_management/features/add_teacher/data/models/user_model.dart';
+import 'package:usv_hub_management/features/view_departaments/data/models/course_model.dart';
+import 'package:usv_hub_management/features/view_departaments/data/models/departament_model.dart';
+import 'package:usv_hub_management/features/view_departaments/data/models/semester_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 

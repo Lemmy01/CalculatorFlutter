@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:desktop_math/core/errors/failures.dart';
-import 'package:desktop_math/core/usecase/usecase.dart';
-import 'package:desktop_math/features/login/domain/repositories/auth_repo.dart';
+import 'package:usv_hub_management/core/errors/failures.dart';
+import 'package:usv_hub_management/core/usecase/usecase.dart';
+import 'package:usv_hub_management/features/login/domain/repositories/auth_repo.dart';
 
 import 'package:injectable/injectable.dart';
 

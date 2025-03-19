@@ -1,5 +1,5 @@
-import 'package:desktop_math/core/consts.dart';
-import 'package:desktop_math/features/add_teacher/domain/entities/user_entity.dart';
+import 'package:usv_hub_management/core/consts.dart';
+import 'package:usv_hub_management/features/add_teacher/domain/entities/user_entity.dart';
 
 class UserModel extends UserEntity {
   UserModel(

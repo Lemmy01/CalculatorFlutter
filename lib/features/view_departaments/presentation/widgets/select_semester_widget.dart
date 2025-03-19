@@ -1,4 +1,4 @@
-import 'package:desktop_math/core/consts.dart';
+import 'package:usv_hub_management/core/consts.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 
 class SelectSemester extends StatelessWidget {
@@ -9,9 +9,11 @@ class SelectSemester extends StatelessWidget {
     required this.onTap,
     required this.selectedSemester,
     required this.getTitle,
+    required this.w,
   });
 
   final double h;
+  final double w;
   final int lenght;
   final Function(int) onTap;
   final int? selectedSemester;
@@ -20,7 +22,7 @@ class SelectSemester extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: h * 0.4,
+      width: w * 0.2,
       height: h > 600 ? h * 0.65 : h * 0.6,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

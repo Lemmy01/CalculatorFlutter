@@ -1,4 +1,4 @@
-import 'package:desktop_math/core/errors/exceptions.dart';
+import 'package:usv_hub_management/core/errors/exceptions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 

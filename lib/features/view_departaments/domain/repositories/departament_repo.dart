@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
-import 'package:desktop_math/core/errors/failures.dart';
-import 'package:desktop_math/features/add_teacher/data/models/user_model.dart';
-import 'package:desktop_math/features/view_departaments/domain/entities/course_entity.dart';
-import 'package:desktop_math/features/view_departaments/domain/entities/departament_entity.dart';
-import 'package:desktop_math/features/view_departaments/domain/entities/semester_entity.dart';
+import 'package:usv_hub_management/core/errors/failures.dart';
+import 'package:usv_hub_management/features/add_teacher/data/models/user_model.dart';
+import 'package:usv_hub_management/features/view_departaments/domain/entities/course_entity.dart';
+import 'package:usv_hub_management/features/view_departaments/domain/entities/departament_entity.dart';
+import 'package:usv_hub_management/features/view_departaments/domain/entities/semester_entity.dart';
 
 abstract class DepartamentRepository {
   Future<Either<Failure, List<DepartamentEntity>>> getDepartaments();

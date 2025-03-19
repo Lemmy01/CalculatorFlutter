@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:desktop_math/core/errors/failures.dart';
-import 'package:desktop_math/features/add_teacher/domain/entities/user_entity.dart';
+import 'package:usv_hub_management/core/errors/failures.dart';
+import 'package:usv_hub_management/features/add_teacher/domain/entities/user_entity.dart';
 
 abstract class AddTeacherRepository {
   Future<Either<Failure, void>> addTeacher({

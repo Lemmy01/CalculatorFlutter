@@ -1,11 +1,13 @@
-import 'package:desktop_math/core/background.dart';
-import 'package:desktop_math/core/consts.dart';
-import 'package:desktop_math/features/view_departaments/domain/entities/course_entity.dart';
-import 'package:desktop_math/features/view_departaments/presentation/pages/edit_departament_dialog.dart';
-import 'package:desktop_math/features/view_departaments/presentation/provider/departament_home_provider.dart';
-import 'package:desktop_math/features/view_departaments/presentation/provider/edit_departament_provider.dart';
-import 'package:desktop_math/features/view_departaments/presentation/widgets/select_semester_widget.dart';
-import 'package:desktop_math/injection.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:usv_hub_management/core/background.dart';
+import 'package:usv_hub_management/core/consts.dart';
+import 'package:usv_hub_management/features/view_departaments/domain/entities/course_entity.dart';
+import 'package:usv_hub_management/features/view_departaments/presentation/pages/edit_departament_dialog.dart';
+import 'package:usv_hub_management/features/view_departaments/presentation/provider/departament_home_provider.dart';
+import 'package:usv_hub_management/features/view_departaments/presentation/provider/edit_departament_provider.dart';
+import 'package:usv_hub_management/features/view_departaments/presentation/widgets/display_info_container.dart';
+import 'package:usv_hub_management/features/view_departaments/presentation/widgets/select_semester_widget.dart';
+import 'package:usv_hub_management/injection.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
@@ -110,14 +112,14 @@ class _DepartamentHomePageState extends State<DepartamentHomePage> {
                           //                   (states) {
                           //             if (states.isHovered) {
                           //               return AppColors.onTertiaryContainer
-                          //                   .withOpacity(1);
+                          //                   .withValues(1);
                           //             }
                           //             if (states.isPressed) {
                           //               return AppColors.onTertiaryContainer
-                          //                   .withOpacity(0.5);
+                          //                   .withValues(alpha: 0.5);
                           //             }
                           //             return AppColors.onTertiaryContainer
-                          //                 .withOpacity(0.5);
+                          //                 .withValues(alpha: 0.5);
                           //           }),
                           //         ),
                           //         child: const Text("Add a new Faculty"),
@@ -141,6 +143,7 @@ class _DepartamentHomePageState extends State<DepartamentHomePage> {
                         children: [
                           provider.getSelectedDepartament() != null
                               ? SelectSemester(
+                                  w: w,
                                   h: h,
                                   lenght: provider.getSemesterLenght(),
                                   onTap: (int index) async {
@@ -160,12 +163,14 @@ class _DepartamentHomePageState extends State<DepartamentHomePage> {
                                   provider.getSelectedDepartament() != null &&
                                   provider.selectedCourse != null
                               ? Container(
-                                  decoration: BoxDecoration(
-                                    color: AppColors.secondary,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
+                                  // decoration: BoxDecoration(
+                                  //   color: AppColors.secondary,
+                                  //   borderRadius: BorderRadius.circular(10),
+                                  // ),
                                   height: h > 600 ? h * 0.65 : h * 0.6,
-                                  width: w > 800 ? w * 0.3 : w * 0.4,
+                                  width: w > 800 ? w * 0.4 : w * 0.3,
+                                  padding: EdgeInsets.all(w * 0.01),
+                                  alignment: Alignment.topLeft,
                                   child: SingleChildScrollView(
                                     child: Column(
                                       mainAxisAlignment:
@@ -173,20 +178,47 @@ class _DepartamentHomePageState extends State<DepartamentHomePage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                            "Course name: ${provider.getSelectedCourseEntity()!.title}"),
-                                        Text(
-                                            "Department: ${provider.getSelectedDepartament()!.name}"),
-                                        Text(
-                                            "Semester: ${provider.getSelectedSemesterEntity()!.semesterNumber}"),
-                                        Text(
-                                            "Numar credite : ${provider.getSelectedCourseEntity()!.courseCredits}"),
-                                        Text(
-                                            "Profesor:  ${provider.teacherName}"),
-                                        Text(
-                                            "Assistent: ${provider.assistentName}"),
-                                        Text(
-                                            "Numar de cursuri: ${provider.getSelectedCourseEntity()!.courseCredits}"),
+                                        DisplayInfoContainer(
+                                          infoToDisplay: provider
+                                              .getSelectedCourseEntity()!
+                                              .title,
+                                          whatToDisplay: "Course Title",
+                                          icon: FluentIcons.publish_course,
+                                        ),
+                                        DisplayInfoContainer(
+                                          infoToDisplay: provider
+                                              .getSelectedDepartament()!
+                                              .name,
+                                          whatToDisplay: "Departament",
+                                          icon: FluentIcons.office_forms_logo,
+                                        ),
+                                        DisplayInfoContainer(
+                                          infoToDisplay: provider
+                                              .getSelectedSemesterEntity()!
+                                              .semesterNumber
+                                              .toString(),
+                                          whatToDisplay: "Semester",
+                                          icon: FluentIcons.calendar,
+                                        ),
+                                        DisplayInfoContainer(
+                                          infoToDisplay: provider
+                                              .getSelectedCourseEntity()!
+                                              .courseCredits
+                                              .toString(),
+                                          whatToDisplay: "Number of credits",
+                                          icon: FluentIcons.number,
+                                        ),
+                                        DisplayInfoContainer(
+                                          infoToDisplay: provider.teacherName!,
+                                          whatToDisplay: "Professor",
+                                          icon: FontAwesomeIcons.userTie,
+                                        ),
+                                        DisplayInfoContainer(
+                                          infoToDisplay:
+                                              provider.assistentName!,
+                                          whatToDisplay: "Assistent",
+                                          icon: FontAwesomeIcons.userTie,
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -206,15 +238,15 @@ class _DepartamentHomePageState extends State<DepartamentHomePage> {
                                             if (states.isHovered) {
                                               return AppColors
                                                   .onTertiaryContainer
-                                                  .withOpacity(1);
+                                                  .withValues(alpha: 1);
                                             }
                                             if (states.isPressed) {
                                               return AppColors
                                                   .onTertiaryContainer
-                                                  .withOpacity(0.5);
+                                                  .withValues(alpha: 0.5);
                                             }
                                             return AppColors.onTertiaryContainer
-                                                .withOpacity(0.5);
+                                                .withValues(alpha: 0.5);
                                           }),
                                         ),
                                         child: const Text("Add a new Course"),
@@ -251,7 +283,7 @@ class _DepartamentHomePageState extends State<DepartamentHomePage> {
                                                 color: isSelected
                                                     ? AppColors.white
                                                     : AppColors.white
-                                                        .withOpacity(0.5),
+                                                        .withValues(alpha: 0.5),
                                               ),
                                             ),
                                             subtitle: Text(
@@ -260,7 +292,7 @@ class _DepartamentHomePageState extends State<DepartamentHomePage> {
                                                 color: isSelected
                                                     ? AppColors.white
                                                     : AppColors.white
-                                                        .withOpacity(0.5),
+                                                        .withValues(alpha: 0.5),
                                               ),
                                             ),
                                             onPressed: () async {
@@ -342,7 +374,8 @@ class DepartamentRow extends StatelessWidget {
                               backgroundColor:
                                   WidgetStateProperty.resolveWith((states) {
                                 if (states.isHovered) {
-                                  return AppColors.onSecondary.withOpacity(0.5);
+                                  return AppColors.onSecondary
+                                      .withValues(alpha: 0.5);
                                 }
                                 if (states.isPressed) {
                                   return AppColors.onSecondary;

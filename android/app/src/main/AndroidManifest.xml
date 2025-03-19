@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="desktop_math"
+        android:label="usv_hub_management"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

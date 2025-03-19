@@ -1,5 +1,5 @@
-import 'package:desktop_math/core/consts.dart';
-import 'package:desktop_math/features/view_departaments/domain/entities/departament_entity.dart';
+import 'package:usv_hub_management/core/consts.dart';
+import 'package:usv_hub_management/features/view_departaments/domain/entities/departament_entity.dart';
 
 class DepartamentModel extends DepartamentEntity {
   DepartamentModel({

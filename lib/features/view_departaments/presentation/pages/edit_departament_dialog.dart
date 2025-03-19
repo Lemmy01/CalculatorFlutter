@@ -1,5 +1,5 @@
-import 'package:desktop_math/core/consts.dart';
-import 'package:desktop_math/features/view_departaments/presentation/provider/edit_departament_provider.dart';
+import 'package:usv_hub_management/core/consts.dart';
+import 'package:usv_hub_management/features/view_departaments/presentation/provider/edit_departament_provider.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:provider/provider.dart';
 
@@ -66,7 +66,7 @@ class EditDepartamentDialogState extends State<EditDepartamentDialog> {
                         itemBuilder: (context, index) {
                           return ListTile(
                             tileColor: WidgetStatePropertyAll(
-                              AppColors.grey.withOpacity(0.2),
+                              AppColors.grey.withValues(alpha: 0.2),
                             ),
                             title: Text(
                               "Semestrul ${provider.semesters[index].semesterNumber}",

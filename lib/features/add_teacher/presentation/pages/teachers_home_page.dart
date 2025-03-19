@@ -1,12 +1,14 @@
-import 'package:desktop_math/core/background.dart';
-import 'package:desktop_math/core/consts.dart';
-import 'package:desktop_math/features/add_teacher/presentation/widgets/my_form_widget.dart';
-import 'package:desktop_math/features/add_teacher/presentation/provider/form_provider.dart';
-import 'package:desktop_math/features/add_teacher/presentation/provider/home_page_provider.dart';
-import 'package:desktop_math/features/view_departaments/domain/entities/departament_entity.dart';
-import 'package:desktop_math/features/view_departaments/presentation/provider/departament_home_provider.dart';
-import 'package:desktop_math/features/view_departaments/presentation/widgets/custom_button.dart';
-import 'package:desktop_math/injection.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:usv_hub_management/core/background.dart';
+import 'package:usv_hub_management/core/consts.dart';
+import 'package:usv_hub_management/features/add_teacher/presentation/widgets/my_form_widget.dart';
+import 'package:usv_hub_management/features/add_teacher/presentation/provider/form_provider.dart';
+import 'package:usv_hub_management/features/add_teacher/presentation/provider/home_page_provider.dart';
+import 'package:usv_hub_management/features/view_departaments/domain/entities/departament_entity.dart';
+import 'package:usv_hub_management/features/view_departaments/presentation/provider/departament_home_provider.dart';
+import 'package:usv_hub_management/features/view_departaments/presentation/widgets/custom_button.dart';
+import 'package:usv_hub_management/features/view_departaments/presentation/widgets/display_info_container.dart';
+import 'package:usv_hub_management/injection.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
@@ -162,7 +164,7 @@ class _TeacherHomePageState extends State<TeachersHomePage> {
                                         provider.selectedTeacherIndex == index
                                             ? WidgetStatePropertyAll(
                                                 AppColors.onPrimary
-                                                    .withOpacity(0.5),
+                                                    .withValues(alpha: 0.5),
                                               )
                                             : const WidgetStatePropertyAll(
                                                 AppColors.primaryFixed,
@@ -184,14 +186,16 @@ class _TeacherHomePageState extends State<TeachersHomePage> {
                                 },
                               ),
                             ),
+                            SizedBox(width: w * 0.1),
                             if (provider.selectedTeacher != null)
                               Container(
                                   // decoration: BoxDecoration(
                                   //   color: AppColors.primaryContainer,
                                   //   borderRadius: BorderRadius.circular(10),
                                   // ),
+
                                   height: h > 600 ? h * 0.65 : h * 0.6,
-                                  width: w > 800 ? w * 0.7 : w * 0.7,
+                                  width: w > 800 ? w * 0.4 : w * 0.3,
                                   padding: EdgeInsets.all(w * 0.01),
                                   alignment: Alignment.topLeft,
                                   child: Column(
@@ -199,26 +203,40 @@ class _TeacherHomePageState extends State<TeachersHomePage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                          "Teacher name: ${provider.selectedTeacher!.name}"),
-                                      SizedBox(height: h * 0.01),
-                                      Text(
-                                          "Teacher email: ${provider.selectedTeacher!.email}"),
-                                      SizedBox(height: h * 0.01),
-                                      Text(
-                                        "Teacher phone: ${provider.selectedTeacher!.phoneNumber}",
+                                      DisplayInfoContainer(
+                                        icon: FontAwesomeIcons.user,
+                                        whatToDisplay: "Teacher name",
+                                        infoToDisplay:
+                                            provider.selectedTeacher!.name,
                                       ),
-                                      SizedBox(height: h * 0.01),
-                                      Text(
-                                        "Teacher father name: ${provider.selectedTeacher!.fatherName}",
+                                      DisplayInfoContainer(
+                                        icon: FluentIcons.mail,
+                                        whatToDisplay: "Teacher email",
+                                        infoToDisplay:
+                                            provider.selectedTeacher!.email,
                                       ),
-                                      SizedBox(height: h * 0.01),
-                                      Text(
-                                        "Teacher mother name: ${provider.selectedTeacher!.motherName}",
+                                      DisplayInfoContainer(
+                                        icon: FluentIcons.phone,
+                                        whatToDisplay: "Teacher phone",
+                                        infoToDisplay: provider
+                                            .selectedTeacher!.phoneNumber
+                                            .toString(),
                                       ),
-                                      SizedBox(height: h * 0.01),
+                                      DisplayInfoContainer(
+                                        icon: FontAwesomeIcons.user,
+                                        whatToDisplay: "Teacher father name",
+                                        infoToDisplay: provider
+                                            .selectedTeacher!.fatherName,
+                                      ),
+                                      DisplayInfoContainer(
+                                        icon: FontAwesomeIcons.user,
+                                        whatToDisplay: "Teacher mother name",
+                                        infoToDisplay: provider
+                                            .selectedTeacher!.motherName,
+                                      ),
                                     ],
                                   )),
+                            Expanded(child: Container()),
                           ],
                         ),
                       //   Row(
@@ -274,15 +292,15 @@ class _TeacherHomePageState extends State<TeachersHomePage> {
                       //                         if (states.isHovered) {
                       //                           return AppColors
                       //                               .onTertiaryContainer
-                      //                               .withOpacity(1);
+                      //                               .withValues(1);
                       //                         }
                       //                         if (states.isPressed) {
                       //                           return AppColors
                       //                               .onTertiaryContainer
-                      //                               .withOpacity(0.5);
+                      //                               .withValues(alpha: 0.5);
                       //                         }
                       //                         return AppColors.onTertiaryContainer
-                      //                             .withOpacity(0.5);
+                      //                             .withValues(alpha: 0.5);
                       //                       }),
                       //                     ),
                       //                     child: const Text("Add a new Course"),
@@ -306,7 +324,7 @@ class _TeacherHomePageState extends State<TeachersHomePage> {
                       //                             color: isSelected
                       //                                 ? AppColors.white
                       //                                 : AppColors.white
-                      //                                     .withOpacity(0.5),
+                      //                                     .withValues(alpha: 0.5),
                       //                           ),
                       //                         ),
                       //                         subtitle: Text(
@@ -315,7 +333,7 @@ class _TeacherHomePageState extends State<TeachersHomePage> {
                       //                             color: isSelected
                       //                                 ? AppColors.white
                       //                                 : AppColors.white
-                      //                                     .withOpacity(0.5),
+                      //                                     .withValues(alpha: 0.5),
                       //                           ),
                       //                         ),
                       //                         onPressed: () {

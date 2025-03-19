@@ -1,5 +1,5 @@
-import 'package:desktop_math/core/consts.dart';
-import 'package:desktop_math/features/add_teacher/presentation/provider/form_provider.dart';
+import 'package:usv_hub_management/core/consts.dart';
+import 'package:usv_hub_management/features/add_teacher/presentation/provider/form_provider.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:provider/provider.dart';
 
