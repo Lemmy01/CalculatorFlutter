@@ -38,17 +38,13 @@ class SelectSemester extends StatelessWidget {
             height: h * 0.01,
           ),
           Expanded(
-            child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 10.0,
-                  crossAxisSpacing: 10.0,
-                ),
+            child: ListView.builder(
                 itemCount: lenght, // ,
                 itemBuilder: (_, index) {
                   return GestureDetector(
                     onTap: () => onTap(index),
                     child: Card(
+                        margin: EdgeInsets.symmetric(vertical: h * 0.005),
                         backgroundColor: selectedSemester == index //
                             ? AppColors.onSecondary
                             : AppColors.secondary,

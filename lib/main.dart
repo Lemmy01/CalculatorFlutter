@@ -4,6 +4,8 @@ import 'dart:ui';
 
 import 'package:usv_hub_management/core/background.dart';
 import 'package:usv_hub_management/core/consts.dart';
+import 'package:usv_hub_management/features/add_events/presentation/pages/event_home_page.dart';
+import 'package:usv_hub_management/features/add_events/presentation/providers/event_provider.dart';
 import 'package:usv_hub_management/features/add_students/presentation/pages/students_home_page.dart';
 import 'package:usv_hub_management/features/add_students/presentation/provider/students_page_provider.dart';
 import 'package:usv_hub_management/features/add_teacher/presentation/pages/teachers_home_page.dart';
@@ -149,7 +151,12 @@ class MyApp extends StatelessWidget {
             providers: [
               ChangeNotifierProvider(
                   create: (_) => getIt<DepartamentHomeProvider>()),
-              ChangeNotifierProvider(create: (_) => getIt<HomePageProvider>()),
+              ChangeNotifierProvider(
+                create: (_) => getIt<HomePageProvider>(),
+              ),
+              ChangeNotifierProvider(
+                create: (_) => getIt<EventProvider>(),
+              ),
               ChangeNotifierProvider(
                   create: (_) => getIt<StudentPageProvider>()),
               ChangeNotifierProvider(
@@ -208,6 +215,9 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
     if (mounted) {
       await context.read<StudentPageProvider>().getDepartaments();
     }
+    if (mounted) {
+      await context.read<EventProvider>().getDepartaments();
+    }
   }
 
   Future<void> clearProviders() async {
@@ -264,6 +274,11 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
                 icon: const FaIcon(FontAwesomeIcons.userGraduate),
                 title: const Text('Students'),
                 body: const StudentsHomePage()),
+            PaneItem(
+                //use Font Awsome Icons for the icon,
+                icon: const FaIcon(FontAwesomeIcons.calendar),
+                title: const Text('Students'),
+                body: const EventHomePage()),
             PaneItem(
               //use Font Awsome Icons for the icon,
               icon: const FaIcon(FluentIcons.leave),

@@ -1,71 +1,31 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:usv_hub_management/core/background.dart';
 import 'package:usv_hub_management/core/consts.dart';
-import 'package:usv_hub_management/features/add_students/presentation/provider/students_page_provider.dart';
-import 'package:usv_hub_management/features/add_teacher/presentation/widgets/my_form_widget.dart';
-import 'package:usv_hub_management/features/add_teacher/presentation/provider/form_provider.dart';
+import 'package:usv_hub_management/features/add_events/presentation/providers/event_form_provider.dart';
+import 'package:usv_hub_management/features/add_events/presentation/providers/event_provider.dart';
+import 'package:usv_hub_management/features/add_events/presentation/widgets/add_event_form.dart';
+import 'package:usv_hub_management/features/view_departaments/domain/entities/departament_entity.dart';
 import 'package:usv_hub_management/features/view_departaments/presentation/widgets/custom_button.dart';
 import 'package:usv_hub_management/features/view_departaments/presentation/widgets/display_info_container.dart';
-import 'package:usv_hub_management/features/view_departaments/presentation/widgets/select_semester_widget.dart';
 import 'package:usv_hub_management/injection.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
-class StudentsHomePage extends StatefulWidget {
-  const StudentsHomePage({super.key});
+class EventHomePage extends StatefulWidget {
+  const EventHomePage({super.key});
 
   @override
-  State<StudentsHomePage> createState() => _StudentHomePageState();
+  State<EventHomePage> createState() => _TeacherHomePageState();
 }
 
-class _StudentHomePageState extends State<StudentsHomePage> {
-  late StudentPageProvider _provider;
-  @override
-  void initState() {
-    _provider = context.read<StudentPageProvider>();
-    // Set a listener to the provider's isError property
-    _provider.addListener(showDialogIfError);
-
-    super.initState();
-  }
-
-  void showDialogIfError() async {
-    if (context.read<StudentPageProvider>().errorMessage != null) {
-      await showDialog<String>(
-        context: context,
-        builder: (_) => ContentDialog(
-          title: const Text('An error occurred'),
-          content: Text(
-            context.read<StudentPageProvider>().errorMessage!,
-          ),
-          actions: [
-            FilledButton(
-              child: const Text('Ok'),
-              onPressed: () => Navigator.pop(context),
-            ),
-          ],
-        ),
-      );
-      if (mounted) {
-        context.read<StudentPageProvider>().setErrorMessage(null);
-      }
-    }
-  }
-
-  @override
-  void dispose() {
-    // Remove the listener
-    _provider.removeListener(showDialogIfError);
-    super.dispose();
-  }
-
+class _TeacherHomePageState extends State<EventHomePage> {
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
     return Background(
-      child: ScaffoldPage(content: Consumer<StudentPageProvider>(
+      child: ScaffoldPage(content: Consumer<EventProvider>(
         builder: (context, provider, _) {
           if (provider.isLoading) {
             return const Center(child: ProgressBar());
@@ -111,29 +71,25 @@ class _StudentHomePageState extends State<StudentsHomePage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          if (provider.selectedDepartamentIndex != null &&
-                              provider.selectedSemester != null)
+                          if (provider.selectedDepartamentIndex != null)
                             CustomButton(
                               w: w,
                               onPressed: () {
                                 showDialog(
-                                  context: context,
-                                  builder: (_) {
-                                    return ChangeNotifierProvider(
-                                      create: (_) => getIt<FormProvider>()
-                                        ..setSemesterId(provider
-                                            .semesters[
-                                                provider.selectedSemester!]
-                                            .id),
-                                      builder: (context, child) =>
-                                          const MyFormWidget(
-                                        isTeacher: false,
-                                      ),
-                                    );
-                                  },
-                                );
+                                    context: context,
+                                    builder: (_) {
+                                      DepartamentEntity departamentEntity =
+                                          provider.selectedDepartament!;
+                                      return ChangeNotifierProvider(
+                                          create: (_) =>
+                                              getIt<EventFormProvider>()
+                                                ..setDepartamentId(
+                                                    departamentEntity.id),
+                                          builder: (context, child) =>
+                                              const AddEventForm());
+                                    });
                               },
-                              title: "Add student",
+                              title: "Add Event",
                               color: AppColors.onTertiaryContainer,
                             ),
                           CustomButton(
@@ -152,28 +108,46 @@ class _StudentHomePageState extends State<StudentsHomePage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            SelectSemester(
-                              w: w,
-                              h: h,
-                              lenght: provider.getSemesterLenght(),
-                              onTap: (int index) async {
-                                provider.setSelectedSemester(index);
-                                await provider.getStudents();
-                              },
-                              selectedSemester: provider.selectedSemester,
-                              getTitle: (int index) {
-                                return provider
-                                    .getSemester(index)
-                                    .semesterNumber
-                                    .toString();
-                              },
+                            SizedBox(
+                              // decoration: BoxDecoration(
+                              //   color: AppColors.secondary,
+                              //   borderRadius: BorderRadius.circular(10),
+                              // ),
+                              height: h > 600 ? h * 0.65 : h * 0.6,
+                              width: w > 800 ? w * 0.2 : w * 0.3,
+                              child: ListView.builder(
+                                itemCount: provider.events.length,
+                                itemBuilder: (_, index) {
+                                  return ListTile(
+                                    tileColor:
+                                        provider.selectedEventIndex == index
+                                            ? WidgetStatePropertyAll(
+                                                AppColors.onPrimary
+                                                    .withValues(alpha: 0.5),
+                                              )
+                                            : const WidgetStatePropertyAll(
+                                                AppColors.primaryFixed,
+                                              ),
+                                    title: Text(
+                                      provider.events[index].title,
+                                      style: const TextStyle(
+                                          color: AppColors.white),
+                                    ),
+                                    subtitle: Text(
+                                      provider.events[index].supporterName,
+                                      style: const TextStyle(
+                                          color: AppColors.white),
+                                    ),
+                                    onPressed: () {
+                                      provider.setSelectedTeacherIndex(index);
+                                    },
+                                  );
+                                },
+                              ),
                             ),
-                            if (provider.selectedTeacher != null)
+                            SizedBox(width: w * 0.1),
+                            if (provider.selectedEvent != null)
                               Container(
-                                  // decoration: BoxDecoration(
-                                  //   color: AppColors.primaryContainer,
-                                  //   borderRadius: BorderRadius.circular(10),
-                                  // ),
                                   height: h > 600 ? h * 0.65 : h * 0.6,
                                   width: w > 800 ? w * 0.4 : w * 0.3,
                                   padding: EdgeInsets.all(w * 0.01),
@@ -185,74 +159,39 @@ class _StudentHomePageState extends State<StudentsHomePage> {
                                     children: [
                                       DisplayInfoContainer(
                                         icon: FontAwesomeIcons.user,
-                                        whatToDisplay: "Student name",
+                                        whatToDisplay: "Event title",
                                         infoToDisplay:
-                                            provider.selectedTeacher!.name,
+                                            provider.selectedEvent!.title,
                                       ),
                                       DisplayInfoContainer(
-                                        icon: FontAwesomeIcons.envelope,
-                                        whatToDisplay: "Student email",
-                                        infoToDisplay:
-                                            provider.selectedTeacher!.email,
-                                      ),
-                                      DisplayInfoContainer(
-                                        icon: FontAwesomeIcons.phone,
-                                        whatToDisplay: "Student phone",
+                                        icon: FluentIcons.mail,
+                                        whatToDisplay: "Event supporter",
                                         infoToDisplay: provider
-                                            .selectedTeacher!.phoneNumber
+                                            .selectedEvent!.supporterName,
+                                      ),
+                                      DisplayInfoContainer(
+                                        icon: FluentIcons.phone,
+                                        whatToDisplay: "Start time",
+                                        infoToDisplay: provider
+                                            .selectedEvent!.startTime
                                             .toString(),
                                       ),
                                       DisplayInfoContainer(
                                         icon: FontAwesomeIcons.user,
-                                        whatToDisplay: "Student father name",
+                                        whatToDisplay: "End time",
                                         infoToDisplay: provider
-                                            .selectedTeacher!.fatherName,
+                                            .selectedEvent!.endTime
+                                            .toString(),
                                       ),
                                       DisplayInfoContainer(
                                         icon: FontAwesomeIcons.user,
-                                        whatToDisplay: "Student mother name",
+                                        whatToDisplay: "Location",
                                         infoToDisplay: provider
-                                            .selectedTeacher!.motherName,
+                                            .selectedEvent!.classWhereHeld,
                                       ),
                                     ],
                                   )),
-                            SizedBox(
-                              // decoration: BoxDecoration(
-                              //   color: AppColors.secondary,
-                              //   borderRadius: BorderRadius.circular(10),
-                              // ),
-                              height: h > 600 ? h * 0.65 : h * 0.6,
-                              width: w > 800 ? w * 0.2 : w * 0.3,
-                              child: ListView.builder(
-                                itemCount: provider.students.length,
-                                itemBuilder: (_, index) {
-                                  return ListTile(
-                                    tileColor:
-                                        provider.selectedTeacherIndex == index
-                                            ? WidgetStatePropertyAll(
-                                                AppColors.onPrimary
-                                                    .withValues(alpha: 0.5),
-                                              )
-                                            : const WidgetStatePropertyAll(
-                                                AppColors.primaryFixed,
-                                              ),
-                                    title: Text(
-                                      provider.students[index].name,
-                                      style: const TextStyle(
-                                          color: AppColors.white),
-                                    ),
-                                    subtitle: Text(
-                                      provider.students[index].email,
-                                      style: const TextStyle(
-                                          color: AppColors.white),
-                                    ),
-                                    onPressed: () {
-                                      provider.setSelectedTeacherIndex(index);
-                                    },
-                                  );
-                                },
-                              ),
-                            ),
+                            Expanded(child: Container()),
                           ],
                         ),
                     ],
@@ -274,7 +213,7 @@ class _StudentHomePageState extends State<StudentsHomePage> {
 class DepartamentRow extends StatelessWidget {
   const DepartamentRow({super.key, required this.provider});
 
-  final StudentPageProvider provider;
+  final EventProvider provider;
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -294,9 +233,8 @@ class DepartamentRow extends StatelessWidget {
             child: GestureDetector(
               onTap: () async {
                 provider.setSelectedDepartamentIndex(index);
-                await provider.getSemesters();
 
-                // await provider.getTeachers();
+                await provider.getEvents();
               },
               child: Container(
                 padding: EdgeInsets.all(width * 0.005),
